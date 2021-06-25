@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>记一次rce 盲打小技巧 | Liqun</title><meta name="keywords" content="rce,实战"><meta name="author" content="Li qun"><meta name="copyright" content="Li qun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="有东西被加密了, 请输入密码查看.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次rce 盲打小技巧">
+<meta property="og:url" content="https://www.ailiqun.xyz/2021/05/14/%E8%AE%B0%E4%B8%80%E6%AC%A1fastjson-%E7%9B%B2%E6%89%93%E5%B0%8F%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="Liqun">
+<meta property="og:description" content="有东西被加密了, 请输入密码查看.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post8.webp">
+<meta property="article:published_time" content="2021-05-14T13:01:00.000Z">
+<meta property="article:modified_time" content="2021-05-14T14:41:30.473Z">
+<meta property="article:author" content="Li qun">
+<meta property="article:tag" content="rce">
+<meta property="article:tag" content="实战">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post8.webp"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.ailiqun.xyz/2021/05/14/%E8%AE%B0%E4%B8%80%E6%AC%A1fastjson-%E7%9B%B2%E6%89%93%E5%B0%8F%E6%8A%80%E5%B7%A7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//s4.cnzz.com"/><link rel="stylesheet" href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script async="async" data-pjax="data-pjax" src="https://s4.cnzz.com/z_stat.php?id=1279691978&amp;web_id=1279691978"></script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-14 22:41:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/鼠标.css"><link rel="stylesheet" href="/css/昵称颜色.css"><link rel="stylesheet" href="/css/页脚透明.css"><link rel="stylesheet" href="/css/滚动条.css"><link rel="stylesheet" href="/css/个性标签.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/font-awesome-animation.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@master/Hexo/css/iconfont.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_2378142_a0rdikziucl.css"><meta name="generator" content="Hexo 5.3.0"></head><body><a href="javascript:void(0);" onclick="preloader.endLoading();" title="！！！！嫌慢就点一下！！！！"><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div></a><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post8.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liqun</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">记一次rce 盲打小技巧</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-05-14T13:01:00.000Z" title="发表于 2021-05-14 21:01:00">2021-05-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-14T14:41:30.473Z" title="更新于 2021-05-14 22:41:30">2021-05-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E8%AE%B0%E5%BD%95/">渗透记录</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E8%AE%B0%E5%BD%95/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/05/14/%E8%AE%B0%E4%B8%80%E6%AC%A1fastjson-%E7%9B%B2%E6%89%93%E5%B0%8F%E6%8A%80%E5%B7%A7/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/05/14/%E8%AE%B0%E4%B8%80%E6%AC%A1fastjson-%E7%9B%B2%E6%89%93%E5%B0%8F%E6%8A%80%E5%B7%A7/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抽根利群冷静下再想想！" data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="a6d62962271a228d5a17f46262ff9f2ed2513a243b3bf8a1dcceecf90eb55d77">09f7e28a2ee5cc0acb1a500e2b9fb1297435f08653cb47d2da75f53c9bdce32a16820912d1844e581a03f7cbba597a45bf7bdc57409694c6d8c79ef9a4efe06d7ee82643d7b01df0e7a71a79f6ab8add434d56b350eee73dfe0837d2d9d0dd36694baae8ec58991bff627b81cf3e104c10c0dddc49ef32a94673b99a671a0ad0b78059f2ca95f8d4cdd4ca9603037249856e9727a56e53309950a7fc2dc896fd459a59ace9919988e787c7349dd6fa2e448c00de9317b94b047a888b44deaff97d1520de4dfbad27e17e398f9e97bf223c78bfb8be5f2167dc5740d1fc0a69e7017ce684dd4cbe676a4eeda9eafc34d6e7134f6ac9fc4b7c0f3c7e836c509c87e519a6d835337cadc330dda5f7e3095c776715e24e3f6ace406503d9a3c445d6d3b63341d5b8bcbdf44470f5ad7fe4a84d1f0f405f1c9b77355c0e72017cb5c161543cd165c307a29d0e1b132c78a84044570e21d9c81c03720e51d44f0de8d7fe0b97d3c8587e1c57c16d7a7482f1a5a4466f7424c1bbdec3e85406e15a89d071f09b45be3e08ba6036c9908df7c956f5269804b42d7beb56314bab09dd8211ee2814c5ea888f2f7f3fbee9a4309c65391d3cd9be301f70e3b6635cad6eb6738d47699c7bd0047c1b401f25b5e19ed443114a24b16ad6a60bd5f791fd9f8cc98163f4bf28e7a9e67406c3e25b43d35afeed8f9f415a3dd19fb87e03d5e8daee322680abca82547f4654bd1ead34aad41085d065ad462fb66fa87039e24e1828fb2cd9eb29c35367c9399683d02de39985eeb219471d29642317ab009536db17e925e4cd74d1a4b4711bb520a0494f76017392244de42966653459dc14ebebd93e1959d3c72cb4dbc3a5ab623dc358e6765d3c74977cb0361264b3366f6e0c301b23d3a19604f8bd362f7ee46b8100e2a49356489511ccfa0bb00f75d562fff6144a8340b798a0a88167d8a2e8125c139192b3d795af4719430726bcf3ce3ef903c412338c5f21dedd7e6974c49bf8854cb976a3ff00ac60641bbb901f9a52de49eb282b05f1bea725fbb41a68f264d4faf43ef1ec28c7878a442be4c288474d9ddc3e068de4ea1822f14c899062d058a1688d69fd16b0d6bad629fd6ae92ffbb251254f2ae2ea5a728039a73895103b7416c4342bc1244817edc52b7093d1e7da5f87f1996e6308f3c52671ccc223b22ddf86f3cc9229af0936274b7d88b49efeb13ed9e81bf31b5b714086bd38f5902bd0f43baa0489a91f2387931bf465735fc4aa93274a7e487d35793e6553211dc4c1d77397569bd39956fe42d671b85ed745b2fca6e235fa1f38536424d9a12944d00014769c40c38baef92fedcb6e4c8cb301169671f7c375c768ae1a5bfb4482ed11534e1ef3c669eb22388de0672f90cfe9877313ba1ad8f9e68149f92068e47ffb6bcf3e2f1d9aecf2d597e8fcd2f762a92ebeaad347d18a60e75ead86c1746cb6228803a719f7c55b06c4228b678ece7850a46b61bbad5aa4f7816134ec13ead98f4cf1acfe7b350353eda2a5b491db95ce5bd854c90f9b8adfc1c98b2444fcea447d280d8e2dd548c4c78194ef387c385ee213417b27b6ddfdb3c86bb0893e0067ab393b6db15bdea28728c12f50c919204521aed109f58e380dcaf28a44a7f296737d2ae06bb85d929cc82b6b13fd8db98d859ac28201aea5373780d0c192d74e65a58ebb22266182a0141977ffd2f9abf14fd5651f41e698956766f433b3ec4c7d69806be3038f85dd0734aa918fc5686fd2d6cf985b2f492e0275503c9984211d37eb2882d87259157000363d0b0d5b365aa3e6a7dec20446b50bb34aa94b8b9af8a81fc15420b9be6901e55cf974ef3d9744a9a0c9e937a16edff5fcf420edc8dcfc1e3120f3bedcb0b2dd5d4079afc6905ddef40787e29b3c7c2dca3c41fc99f217f23203c11b59bb2c8dce3cde58194cf780e71e98fe9376810f737c72c864cd7f82f3c499ffa9de57fab73e157f8a7a354226c31c3f5d46f2790818be526bcb86f3aed9db0de57bae636fdb067bfeeb9b253e8b8bc01e99b61ed1e0a74757b17105015ea49e738b4bc9dfc10fb5fba045c31946bbbae81decf65dfb61644954acdd61e25bd076a12a4b2c6a7a1f9ea8e73cd855154b7a15912f3b4c5b0606a80aefc00b40f529c1dd03d5a097fda0e4196b043c044e56615fd89e7bbd67d84fb6698a5526a4bd58d135932f4e228b045388c8140fe12392f8a0b8e574eee1cbe6c27a4e6fbd4e9687db78027273d632837ba8534d774e1b9f7d6bbc97d63df2983b7283c4ff79a54ccfe88e1f1e9b01a2962a634ef89a634a2b067c67a8cf70c3b9a333dd633ae6e68d240aece8f6b9010dcbbfa4435ab37cbefc04716e01a9576ee541313a009475d518b93d1b9b4e635458d868dcd4727144f462958de03b454e64b423f7c5a79f7801379dfc2e6befe69f60513e87024fbd9e319408b81430905578ce8d8ea97f618efb950c50f6ff8cc43a81a7de4811630e9d2550b672e245580082210445615aa86151a756e88a8849ffdb0b3728b3554d39295c0d38602aa68c8a460b9384250b76315b3ec0056d0678ba7094e370ca3206c0af332ee2176831ce2a831880f4487b843515a80a1d1cf9602bb128946650a450606daca05702ec7e340adfe2ab57da1916b2400a7b9b06d5e4357577b9d19bb38c96ef4432389c32f8e1a319b1f3e996f708e2f9c553291a872193ef962c68e5d01bc63c02fa9bf8dc391d99cae72548af999c6f9e5505285566eb06600a21c9c788baa8ce5e10260914940d652fd5b8e793b226906cb12522ec13c46e124e9f6c2fdaae5ccd196e1ab4b8f9368cb8447747d2a2fe6327f8f0faf135f228a3fc71e5c6671bd6a466ce8c67134ec37e2d3cf03a5b7b66dccbc9f85dd7ffb3118d93aef108826b020b2ad27b53525379bf27ea39ddaac604718032f5c9567fca5aa34389d50ca862d5924cb87e692f54ac0ae6aae6d448608d0cbbd388cbca95ff9a7a448e9502e54f7e4152f599e240dd6be1d1b62ab6737e0ff7a9527b580c5ba17531ed05a033fa10cc85727f678ba71f9f29a95fa1e99d14cdab7b404d5e685beeef53d32e174dd486775b6dd9308724688254ba5a4aed4e7f4f112f1cc800b1ca485eeb0977a8e02705d1f67d9738e633434a253825d8064165bc438cfe61950ed3145d000c2cbbdbcadac1e2540c1b5fdb7e65966c3e9fb742fc634c8fa3c219153abd2f59ad492674e55bfddc943986ff70fb9d80313f7d0453218f2fb1481a9051b839ac70e733daa6e9cdf8a50801cd2cd489dfa95bff03bcbe2066af8d462711acfcec39599cd7d3777083af561cc8e8cf17c42eb6164066cdd5ffea01418f6fc91853ff96444709ce88ce7554e5fc474f4391d0833c165ec18b5a6d835a243b5527be7e2a227fcade7d818d0aa6020df3bdc57095edbbe1b98e99a744a636b4fa8fff3106998b7693f1c903592ab5e56877414fc1109623259066842a5a3169ec5c8b9ee1544137837d4c0593ab5e26a3c74b9f3b909cfbd58d2df3291c9583a5184f387200f2608d81dcfd83ca7cbf67344b5ec9135a2597b133cafc2c0ca303350135daf42227d4f819be759b721269539deef6801ef9f8601431757ee920314883cb2749f5edcf25233b40f3ea950af67d061f0a0eb1d922cb58476d4952c0db00077651b07b1f61a8f9ffb4d290fdca9e7055f6ca43ff636d2b9228cc79391129b005d44dcb463a0fa53734f2e413b5e1e32ac88bcff68535c75e9fef94609431a6daac8c58729ce0b91f4e3f0ec8362b178c19f5a772d958a5be60e49703ffc1bf298550501c6aa1da7216bf6b9bf96c5ae60ebd9ac7ed04cd9432d50e4af80d1a9f85a8c5d577404c821ac9063355ae8cc7832d8b62547af80dfa57f7ef3412e22ee3b4f35b2e6d738ed542d73b4a4a14295284ce225847d7ff97480a16ff452ba6d1263a5dd7a69cb0b7bdbaf4d5a0edaf3f64688810ea77b1929b67fbc8d433f889b36d620d694e3badfeec016b8415b4837f348c826913c9de037a6141d1870f4510f7860ddb9c20bcdb0c18280215df054d63ec932eb2637deb105a599a3f0caa12133091e1065d77a8b3547dd432841ac0e72a41333346f4c73bcdfcc948d1ae15f0eadb96a369e6364fe765baad8494f46a65410b04f6a36aeccaecb3506bc4b2c9364d480b3a31988e19de0029f70231cd172b156426054673554bee5f6514ac37512b24df038dfa3fe545276ea38ca1dc733f5433b221bde45a77e56ada35682b3c6812f1eb7b3f5ce8eec7cdf3fec82793b6649311a770b58bcbfae1587d4acc2467c3ae5ca0f6d4d13cc58b232dff4d4a349a41889d689a2fc1ad203c4f7a2cfcada356f0ee9dc175eab2760b49c9f76c39202abb963e0b69d8b9d6f9668811cc82fcdbc5506ef82c3a59d90fedd2b642a527deebfdf2c9295b30143566f15996dd6ec4b362e8030f7d3c426d30c205a21c198bc1aca20b5bd344327e72c9289f120814e7011cb6089f662dece1c35fa96f40bac89a2ed40c88c0ed485f2c793c88e0cd8a50acea9beaf650cc94ab812b0f83c557845ec141217aaab471c129047eeb068dd2b769b6eb2eaa7a978f7529c769874d2420cb4012ace95455b96c06177eeac009e038b3debdca5527e04b3f024a07812968af8e6fe0f91114efaabe6f097267a5e7bbdc475b6da74e8f4b577b11035ce97f2b9a9b29e556dac2fa24fb3eaae25b1eb0bd47e16161f14e493b0756f754528d173f7b7c6d756ed70f7869711f06254e2e8a3b0f78f3c8a4c49a584da259ca4c8f85130faefbc4acc51f141edb712a56d316b012ab001aa53f1e1268010cdce0b55e9e89be0c99b9122ab58de2bc4b5d9a84c3cd12c2f9297a184779d20dcf87357fa651b460c4207174cf6812d0e0a25e49df3ba40d0791734af6f068af577de1f065f8a3b32238f3d051773628a9c06f5edd34e6f5796acc9287ac062fea9d3b98e00a058a95eff057680b5242126f633e99c39eb96bf603afb5d16ef2c87b122d0440ed6a5f0e15a0b01c0862a8ac6cd4111d8f55b9ed1857a2d56371125cab0eda9fdec74dc306b8f2174b99ea9b24bb9ef2189a6876ab9757c66195702ed296fe5a829d5a4395a542dd6d0386db9b51ff60211c1b8a8cdfaa51c01135658ba41a25e6c2a03cfd42ac27b9decd22695604c7c23be91a409fce90f68abac13c8a886bdf0d1d2ac00787ec9efa8eccb7a3ab21d74b4c83ba19b769d6dad6a4a69c22607aee33b7a764fb9cae1f5d6ba6ee82596a381aa2bd6556f469ca83b69283820c1e1b623798bd53737f8201a639546f933215452a2fa9bb9c88f698f0dcc17b73f736a111005d133df49afca5f04a58a2d29499bbdb48dec253d9112e6705204a880a13a43751329f179277535faa159f2cbaf392fce1475de308d610489608fabc2636e6d463dce681114f9e6c0215c829d917f7fae874e4d09376befb8026b16814f62b517bffa2159cd9f6302d63591bd654e633e052f0d4d5394d69e6c07cb39cddab8392f9b35d1ed317e92bf9925d42bc9218f130852225f5b342f33497fc31378452287a3e73419203c5834fface3a8f4a4f9cd8da6725e14f2e4564ead9e766c27417903cdff87b5acba13a61aec5b9f1d279f850d9ce68d4ffef499c34695fd67a4260c54d2e52e53dd4e624b3f11f9e08337fc2928aeb3b8deeedf0145bf6f1b89fe0fb27729b7784e8109bd9cf1a17c944368699e7a5525ccc6c8ffa9d8d60b1cab65fd923059bdefcb44bb658ac79d812639378c8730942be467302431300f94b8fa570a93d19b143d831cd84c703eb6cea43aadd0d19d719f6670a8dac3c1b9d2c3262d4eee55e7a89ad46e906c697b939eca4851e521b99b26d6fa7d3fe0aaf554252c61b622dce0b743cf3e91626219b09cbacbd3e31b062842ef4060ac3dd9f54b8365dd525efafc2513ff39fa12c705a6c795ca19a310940343f0f6c8020cf7f1981e387576d52b15212af974bba84c94cec2b86242a644e31baa23293150accffea54c8d7e365aabb7dbebc5ea936c1f047ce9d6cbc64c46084770da7b70465543a51c12fc870b2d92abfbc339746b1ade049472a7345a3cdb9d944095b11db82f6b399f2dd93438e47813d5be4d177508ddbde41fbc7b9a8546026c4615060ff4564b1b3449d3f69f5a96fe76cd71710f4f85fce2a9e0115c6a72062ea1b06134d5ce262d348d533823614f41e47e8a097c560a1677402514b97fac18b921baecb65691f19dc240be8ac6d81b2b8523e7a796138858f8de6589b8ba2eaa2e6f0839c3899a4c629b7ec6f262975921cb47d1cc1fef89bf255450685990084e209f70a2df05b71421a0c92f61e24f1611307b7eab1a2e5d3caffa0e1fc69d0b78391c9cdc7970322d78b3cfc3dc84017d2c9e85758d2833c340bb3d326ce3281bae45fabb4652015e09a5ba15b292a1e05b905c0d74312a1c2d4b08a70e220e526510a817836dd2f7727340ddba0067dd13f5dbba90d4b3bed2401570aa4c522a41b1504ad707ef58ef233515d340aec060db47a7d68581e447514bb38ab068d5210478fad40f3899df771f2fadbe02c3071e6c087ea5445cf2728d7ec0abd146305491cbbca451b40280c8883ec1facaffe20ad523f086c9a1ac5a75bc7ac8576c4b3772295958562d1ceef011792efcc5ac242d77a75e04861b4c3f325a22986819f2b0efd8ec01c756ac1d6d5b1e85fd1b0ca305b0c88ae259e8456ca5285e52ea199c022efc85fd939b39b7fe085196a5cf5b9f3480e033cd9d527c8c3a9fed01665ec13ffe1572ac8528e0e963f947edef9d586fc3d7f0c560f3fc829ea342bda5ed218d4aa608bdbfee20f48a663f9e4dc1e8c77f8f332ab80c38ddda733dfc1deff7b2b724a537c89ca8928a74b68999fc4578c618b8e4124268ef80280759fdbde9a34e96b1c7494b2ac90bcc21ea987cd6606f6f52f387dea1bae7e0a11decd6b397be15a68f5eaf31502910813a0dcc674c98d2cbc074050a444f7d4e29415e0b04a37eb42793504bf0df1d50d130f1c745a52c128c9974e29b5a4a575fbf4447a25ec70d5915897d5d5c989e227809ea70dfe25239fe8772bc01f9f0cf544afd6ce41ae0266dfa147949937555482eec1a3028726575cdd5cd7b60968fcef5e7bdcc8c738d18514eac1edd794b40486ab40207693d55949afdbbb930c81ee319403d6c00a45eab263b2c1cb105d86bdc71ecb0bb6dddb0ebb78bb69ed58bf4d0f02244e0f351e4655848d05ad4d1adac93d7a63339ab485751793c88872e6fb702152e63e7b3f467d4220889790390e1d5d2151a028e9b27afbe77f662d860184c4aa1e246efadf5c2a7423c20bf267552f676a810fb2e7069cb3371f8d465c2c618bbdaf61cd8b36e742755398badcd01fcca7a96cf842b6f67249fd47edc0ecea3857e20f6ce5c597a00562b414982504f9eeb4d17f3bd1e429110170508f90e73ce48ae5bfcd711b4da8b03dd3646b447e7cda656d57d4615af7445bb808fcb18b17d8e35911503d47d1095a1b423b401572239ccbb8f3c49390c82b59f095613b65f2d109397a5ddaf5d2892dff77bd34e55913fe0e020a295ccb6e5c1eef5311242109715b3b13fb092949ff473f2514616244a5f42adb742bc69feab0571313722da549e9f921037c17ce2e2db0ddfa14552c9b59466f9f76b6670237739792b2f0d33435bcb83aee1f25e0a3b3885dfd5ce797e26c75f08f03601d10db93a1d2f122c492c1ff4d45f38552c5812af789c531fc83cc325a928f6c31641b7e2dca7cdddc39d1d81f9d8ad4d5057cda27a3e28843dade977a92af2a4192d37cc34d4ff1964e2c5eb87d668c6a4e3cced242fa951010c34f12f357011a7115ac2612dc015536a9ebd319bbebae14a5dcf86c2077e29a9e33d9d4e5a68b575a989e7e5febf39c3b98d5578bd84a25370ac6720c2d221819b4c8c9ab4bc8b07a187e2474e9970b3061ba17c7cb6c1598d6e6db3684e3ccd4ef3384801a68a25272a23fbbbf71090e4be51b3162c1b7ea80dbba8a6214ac42451f84daf8cd4dfe9101e7b8d570f870b93db34952396d720af150beae74365fe1d9464e5641a6b730b0185c6b3cf973302e9006cadd33e7bf08a92cecc812763e2f1c8aaef3e2e4f0fcd582f13823d0cd52c63e365728149afdecf10c34397d02ad6d9c6f3d9bd072ad1242df4ab59db399b54444a39b0f2398cdc6647b65f6756d778e986961fd070f48e2a5b6e641a57904f6e0e57624c789d41e3f31c3f9e13d406530453cbb5148109ac59a95519ed1522c91716a9524f5e3aa02499f88959e3d56a0609ee399d5440c1b27b194bcede005bb813c6fb591d0e309a0b323e8e25b604ad04ee38fe657b75b5da003f51654dc8aca52bd57204e6ac8de8bea765d03d057720b5a491113d5477cb44deb7ec66fc769d1d26f5d027887aecd64bf1d0764a26981beba34a643ca82a6253631a2432a86691c86ab027ae97b7a4ce5ba6bf9bc39bb3cc606cd68fe9bb939fae353b22d25ccf85bb9bad42f30b431ada83740f2da34ff33ea94027b655b913ebcb97c7c54cfa23ca26abf079ee2ee6350ee92ffebd6195ebc81b10df06869a5bd496d4b34e22a900787cbe12c9f5b3864e41ad36e62f5cec3ed52e62acdc848bd615fc51a557efe63afd1358d537d7e60ef0bf3bdaf201acc15e888304992c767301879dc31bb7f2b88a335cfc7b56c3906becd38efaaf72a298c609e1a86f1a95ae45423f453592ee186939ad62080a99d78627ba12e954ed7d2f269a8d75f8bc264da7984c4a0da55e89d4609ff6d8ddb25b2429f04c534b84b791e494451661eed56fa094174c3ae9a3ff5fd851612887c6f62e0afa73f7a01d501fbcdb9ca413e240e6e58a5d2f2c6e429985380d2e8dbbef758e0f50d29aa0ee47511e03930076c1de350387b8332ae0272ca17959ab78cab5a7dc7a067ecf54396bce1b86ee03758486565fe291718d05be7cc424219c250333061fe9e171d9a6970</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">暂不公开                                                                                                                                                                                   .</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Li qun</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.ailiqun.xyz/2021/05/14/%E8%AE%B0%E4%B8%80%E6%AC%A1fastjson-%E7%9B%B2%E6%89%93%E5%B0%8F%E6%8A%80%E5%B7%A7/">https://www.ailiqun.xyz/2021/05/14/%E8%AE%B0%E4%B8%80%E6%AC%A1fastjson-%E7%9B%B2%E6%89%93%E5%B0%8F%E6%8A%80%E5%B7%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.ailiqun.xyz" target="_blank">Liqun</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/rce/">rce</a><a class="post-meta__tags" href="/tags/%E5%AE%9E%E6%88%98/">实战</a></div><div class="post_share"><div class="social-share" data-image="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post8.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/05/15/%E8%93%9D%E5%87%8Coa-%E5%AF%86%E7%A0%81%E8%AF%BB%E5%8F%96rce/"><img class="prev-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">蓝凌oa 密码读取rce</div></div></a></div><div class="next-post pull-right"><a href="/2021/05/02/%E6%B3%9B%E5%BE%AEOA-%E5%89%8D%E5%8F%B0GetShell%E5%A4%8D%E7%8E%B0/"><img class="next-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">泛微OA 前台GetShell复现</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/06/05/H3C-IMC-命令执行/" title="H3C IMC 命令执行"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-05</div><div class="title">H3C IMC 命令执行</div></div></a></div><div><a href="/2021/06/05/用友NC-rce/" title="用友NC BshServlet 命令执行"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-05</div><div class="title">用友NC BshServlet 命令执行</div></div></a></div><div><a href="/2021/05/15/蓝凌oa-密码读取rce/" title="蓝凌oa 密码读取rce"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-15</div><div class="title">蓝凌oa 密码读取rce</div></div></a></div><div><a href="/2021/04/10/亿邮电子邮件系统-命令执行/" title="亿邮电子邮件系统 命令执行"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-10</div><div class="title">亿邮电子邮件系统 命令执行</div></div></a></div><div><a href="/2021/02/03/Apache-Druid-CVE-2021-25646-远程代码执行/" title="Apache Druid CVE-2021-25646 "><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-03</div><div class="title">Apache Druid CVE-2021-25646 </div></div></a></div><div><a href="/2021/02/03/锐捷网关RCE/" title="锐捷网关RCE "><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-03</div><div class="title">锐捷网关RCE </div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Li qun</div><div class="author-info__description">ailiqun.xyz@gmail.com</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ailiqun.xyz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">你总是来去如风 <img src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/xx.gif"></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content toc-div-class" style="display:none"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#rce%E7%9B%B2%E6%89%93%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-number">1.</span> <span class="toc-text">rce盲打小技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A3%9F%E7%94%A8%E6%83%85%E5%86%B5"><span class="toc-number">1.0.1.</span> <span class="toc-text">食用情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E6%A6%82%E6%80%9D%E8%B7%AF"><span class="toc-number">1.0.2.</span> <span class="toc-text">大概思路</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BE%E4%B8%80%E6%AC%A1Fastjson-rce-%E5%AE%9E%E4%BE%8B%E6%BC%94%E7%A4%BA"><span class="toc-number">2.</span> <span class="toc-text">举一次Fastjson rce 实例演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%81%87%E5%88%B0%E4%B8%80%E6%9E%9AFastjson"><span class="toc-number">3.</span> <span class="toc-text">1.遇到一枚Fastjson</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Pworshell-%E5%90%84%E7%A7%8D%E5%A7%BF%E5%8A%BF%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4%E9%83%BD%E6%97%A0%E5%9B%9E%E5%BA%94"><span class="toc-number">3.0.1.</span> <span class="toc-text">Pworshell 各种姿势执行命令都无回应</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%80%8C%E5%90%8E%E5%8F%91%E7%8E%B0%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%B9%E5%99%A8%E4%B8%BAJetty-%E6%97%A0%E6%B3%95%E8%A7%A3%E6%9E%90webshell-%E4%B9%9F%E5%B0%9D%E8%AF%95%E4%BA%86%E5%86%99%E5%85%A5%E5%A4%A7%E4%BD%AC%E7%9A%84Jetty%E5%86%85%E5%AD%98%E9%A9%AC%E6%9C%80%E7%BB%88%E9%83%BD%E5%A4%B1%E8%B4%A5"><span class="toc-number">3.0.2.</span> <span class="toc-text">而后发现中间件容器为Jetty 无法解析webshell 也尝试了写入大佬的Jetty内存马最终都失败</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E5%A7%BF%E5%8A%BF%E5%B0%9D%E8%AF%95%E4%B8%8A%E7%BA%BFcs%E5%A4%B1%E8%B4%A5"><span class="toc-number">3.0.3.</span> <span class="toc-text">各种姿势尝试上线cs失败</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E5%9B%9E%E6%98%BE%E5%88%A9%E7%94%A8%E9%93%BE%E6%80%BC%E4%B8%8A%E5%8E%BB%E4%B9%9F%E6%97%A0"><span class="toc-number">3.0.4.</span> <span class="toc-text">各种回显利用链怼上去也无</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%A3%E4%B9%88%E6%88%91%E8%83%BD%E6%83%B3%E5%88%B0%E7%9A%84%E6%96%B9%E6%B3%95%E5%B0%B1%E6%98%AF%E9%80%9A%E8%BF%87web-%E4%B8%BA%E5%85%A5%E5%8F%A3%E5%BE%97%E5%88%B0webshell-%E6%88%96%E8%80%85%E5%BE%97%E5%88%B0%E5%9B%9E%E6%98%BE-%E5%8F%AF%E8%83%BD%E6%9C%89%E5%BE%88%E5%A4%9A%E5%85%B6%E4%BB%96%E7%9A%84%E6%96%B9%E6%B3%95%E5%9B%A0%E4%B8%BA%E6%88%91%E5%A4%AA%E8%8F%9C%E4%BA%86%E6%B2%A1%E6%83%B3%E5%88%B0%EF%BC%8C%E6%9C%89%E5%A5%BD%E6%96%B9%E6%B3%95%E5%90%84%E4%BD%8D%E5%A4%A7%E4%BD%AC%E5%8F%AF%E8%AF%84%E8%AE%BA%E8%AF%B7%E8%BD%BB%E7%82%B9%E5%96%B7"><span class="toc-number">3.0.5.</span> <span class="toc-text">那么我能想到的方法就是通过web 为入口得到webshell 或者得到回显 可能有很多其他的方法因为我太菜了没想到，有好方法各位大佬可评论请轻点喷</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E6%83%B3%E5%88%B0%E4%BA%86%E4%BB%A5%E5%89%8D%E7%8E%A9%E6%89%B9%E9%87%8F1433-3306%E6%8A%93jj%E7%94%A8%E5%88%B0%E7%9A%84for-%E8%AF%AD%E5%8F%A5%E5%A5%BD%E5%83%8F%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%BA%8E%E8%BF%99%E7%A7%8D%E6%83%85%E5%86%B5"><span class="toc-number">3.0.6.</span> <span class="toc-text">最后想到了以前玩批量1433 3306抓jj用到的for 语句好像可以用于这种情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E5%B9%B2%E5%B0%B1%E5%B9%B2%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95%E6%9C%80%E7%BB%88%E6%9E%84%E9%80%A0%E5%87%BA%E5%8F%AF%E8%BE%BE%E5%88%B0%E9%A2%84%E6%9C%9F%E7%9A%84%E8%AF%AD%E5%8F%A5"><span class="toc-number">3.1.</span> <span class="toc-text">说干就干本地测试最终构造出可达到预期的语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E4%B8%8A%E8%AF%AD%E5%8F%A5%E5%8F%AF%E8%A7%A3%E9%87%8A%E4%B8%BA"><span class="toc-number">3.1.1.</span> <span class="toc-text">以上语句可解释为</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">本地测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%8A%9F%E8%BE%BE%E5%88%B0%E7%9B%AE%E7%9A%84"><span class="toc-number">3.2.</span> <span class="toc-text">成功达到目的</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AEtest1-txt-%E5%BE%97%E5%88%B0%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">3.2.1.</span> <span class="toc-text">访问test1.txt 得到执行结果</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在线工具汇总"/></a><div class="content"><a class="title" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总">在线工具汇总</a><time datetime="2022-07-24T12:13:00.000Z" title="发表于 2022-07-24 20:13:00">2022-07-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="H3C IMC 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行">H3C IMC 命令执行</a><time datetime="2021-06-05T14:23:00.000Z" title="发表于 2021-06-05 22:23:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用友NC BshServlet 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行">用友NC BshServlet 命令执行</a><time datetime="2021-06-05T13:21:00.000Z" title="发表于 2021-06-05 21:21:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某0A 全版本getshell"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell">某0A 全版本getshell</a><time datetime="2021-05-20T08:11:00.000Z" title="发表于 2021-05-20 16:11:00">2021-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某OA 任意用户登录"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录">某OA 任意用户登录</a><time datetime="2021-05-20T08:10:00.000Z" title="发表于 2021-05-20 16:10:00">2021-05-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Li qun</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/utils.js"></script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/search/local-search.js"></script><div class="js-pjax"><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script></div><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'LHEeV46JNDnW2PY1KjVTLy2J-MdYXbMMI',
+      appKey: 'XESiWusPnVBEz6s4AhXF6ONB',
+      placeholder: '说点什么吗',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-cn',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/订阅.js"></script><script src="https://cdn1.lncld.net/static/js/3.5.0/av-min.js"></script><script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script><script src='/js/动态标题.js'></script><script src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><script src="https://myhkw.cn/api/player/1613835026120" id="myhk" key="1613835026120" m="1"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="暴富" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script><script>(function (w, d, s, id) {
+            if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function () { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window, document, 'script', 'webpushr-jssdk'));webpushr('setup', { 'key': 'BKlorLZnBq1iMFfk3xnjGJjBLNqEm1J1Bi-iRHabMhNYHjT46u-7wQUWjEMij1R6p1CyK6GjOAizKFpbF9XDjYU' });</script></body></html>

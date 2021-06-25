@@ -1,0 +1,6 @@
+
+/*文章透明*/
+
+.layout_post>#post {
+    background: rgba(255, 255, 255, .9);
+}

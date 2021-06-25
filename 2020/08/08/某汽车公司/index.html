@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>记一次对某汽车公司的简单渗透过程 | Liqun</title><meta name="keywords" content="sqlmap使用,渗透测试,c段"><meta name="author" content="Li qun"><meta name="copyright" content="Li qun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="有东西被加密了, 请输入密码查看.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次对某汽车公司的简单渗透过程">
+<meta property="og:url" content="https://www.ailiqun.xyz/2020/08/08/%E6%9F%90%E6%B1%BD%E8%BD%A6%E5%85%AC%E5%8F%B8/index.html">
+<meta property="og:site_name" content="Liqun">
+<meta property="og:description" content="有东西被加密了, 请输入密码查看.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp">
+<meta property="article:published_time" content="2020-08-08T04:40:37.000Z">
+<meta property="article:modified_time" content="2021-02-24T02:53:09.218Z">
+<meta property="article:author" content="Li qun">
+<meta property="article:tag" content="sqlmap使用">
+<meta property="article:tag" content="渗透测试">
+<meta property="article:tag" content="c段">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.ailiqun.xyz/2020/08/08/%E6%9F%90%E6%B1%BD%E8%BD%A6%E5%85%AC%E5%8F%B8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//s4.cnzz.com"/><link rel="stylesheet" href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script async="async" data-pjax="data-pjax" src="https://s4.cnzz.com/z_stat.php?id=1279691978&amp;web_id=1279691978"></script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-02-24 10:53:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/鼠标.css"><link rel="stylesheet" href="/css/昵称颜色.css"><link rel="stylesheet" href="/css/页脚透明.css"><link rel="stylesheet" href="/css/滚动条.css"><link rel="stylesheet" href="/css/个性标签.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/font-awesome-animation.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@master/Hexo/css/iconfont.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_2378142_a0rdikziucl.css"><meta name="generator" content="Hexo 5.3.0"></head><body><a href="javascript:void(0);" onclick="preloader.endLoading();" title="！！！！嫌慢就点一下！！！！"><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div></a><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liqun</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">记一次对某汽车公司的简单渗透过程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-08T04:40:37.000Z" title="发表于 2020-08-08 12:40:37">2020-08-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-02-24T02:53:09.218Z" title="更新于 2021-02-24 10:53:09">2021-02-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2020/08/08/%E6%9F%90%E6%B1%BD%E8%BD%A6%E5%85%AC%E5%8F%B8/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2020/08/08/%E6%9F%90%E6%B1%BD%E8%BD%A6%E5%85%AC%E5%8F%B8/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抽根利群冷静下再想想！" data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="391006398fd01c12262e104c35b0c424914de6f596e434955d10151fd250e594">09f7e28a2ee5cc0acb1a500e2b9fb1297435f08653cb47d2da75f53c9bdce32a16820912d1844e581a03f7cbba597a45bf7bdc57409694c6d8c79ef9a4efe06d7ee82643d7b01df0e7a71a79f6ab8add434d56b350eee73dfe0837d2d9d0dd36694baae8ec58991bff627b81cf3e104c10c0dddc49ef32a94673b99a671a0ad0b78059f2ca95f8d4cdd4ca9603037249856e9727a56e53309950a7fc2dc896fd459a59ace9919988e787c7349dd6fa2e448c00de9317b94b047a888b44deaff97d1520de4dfbad27e17e398f9e97bf221ff6910c0f976b9c615751bbb7c64cba15bc99f475a9fd73fe24e93d3f1c2717e95270529c63cb5be0f226fbf134324db62bf7f7ba5d3551beda5b90765ef37670d2ce5f53feff969354f785fe25052c0056956ea6abff08b3d8d791cc49076eba873a1ca200fe6c7ef18d19f7d8dad46bccff0329c96af23ff962a534a361ac371b3bf9ed78f84bcb2a98b5a9c2c65587c956d9d139155e171e2306eaf4fbd53b3a0b1b4f0fc46fcdc4efe5e9ac1cdfa183ae6b0aae7d67bddd3e34a1c9dd49d86945957b2b3dafad4e1545b86f44af94625299b08ef28c07c9b06a554d910d60a77699191dda8d364bc5cbab008219056b7f8f008617a579df32891bc9a7214161485b191f83689557efec762aea4bfd2422db821f241d040f6d594b0bb489a8c145f2b306c3fa836c9137f283744cf07cba47f55de22d7f1a27cb7606d6d5902741d63e728192210ff3d4df12de7c0519f9a5e852eef44db3cbf5bace565a097f945f44b23d9b0ed1fbf5fe82fb2ea51eaf7081004b77bce2030b8edc762a6ca372a66dde5c2108beee9cbe1331450f26bbe2f7e7222dee54f13f5ef3c89276a31f0fbfd95c6b81a24599a8eff8b109f1f0eadd9e61ad3f988ea0ccecb7222f83c11fccfebdbfc2cac9f57b6b6573bcf876ef37c23ac1aecfdfebdcd2f43dc31be670740effae232f0b5502ec5c3a8ec17b7f07dcc14893bf44b9c91e0a5d1f7bb23e9984565e0e417dea380f49aeef3d5cc79e30808cdccaa1a0a07bd2a860c6442014b520517a476e552e04187adaf3fddc300f28328c10fb781af4cc60fb2bb3c6ed189c0c2ee89b02aacb18971aa17ca0a2161baea0540eaddb2cb57f679134011e4834def4c86c8dfd92944887afe4e1399951dff51db0c5f94f0da848e3c9d168d7c5fcc5bf390fbaea4801de1fc5a23e2e13405ff282c9af5b7ebd61d9b6189db40bf4e683de007510dabd4668de83e8814bc1422713a31cca5b57e317ac75d94241baba68261f8dab1325f5d4ed883af401e77e6c6a57b9201e58eef195c3ac5dc52d296a2177f9c26dbf58cf001382519d255cc91cc92a3e40add5eca3f1abf4aab8de71efc7bc6903d152bc83e5e85bfff3a697dfed2e816d1b</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">暂不公开                                                                                                                                                                                   .</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Li qun</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.ailiqun.xyz/2020/08/08/%E6%9F%90%E6%B1%BD%E8%BD%A6%E5%85%AC%E5%8F%B8/">https://www.ailiqun.xyz/2020/08/08/%E6%9F%90%E6%B1%BD%E8%BD%A6%E5%85%AC%E5%8F%B8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.ailiqun.xyz" target="_blank">Liqun</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/sqlmap%E4%BD%BF%E7%94%A8/">sqlmap使用</a><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a><a class="post-meta__tags" href="/tags/c%E6%AE%B5/">c段</a></div><div class="post_share"><div class="social-share" data-image="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/09/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><img class="prev-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post8.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">记一次对某企业的授权渗透测试</div></div></a></div><div class="next-post pull-right"><a href="/2020/06/18/untitled-1592474049377/"><img class="next-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Cknife 跨平台菜刀 修改版</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Li qun</div><div class="author-info__description">ailiqun.xyz@gmail.com</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ailiqun.xyz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">你总是来去如风 <img src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/xx.gif"></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content toc-div-class" style="display:none"></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在线工具汇总"/></a><div class="content"><a class="title" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总">在线工具汇总</a><time datetime="2022-07-24T12:13:00.000Z" title="发表于 2022-07-24 20:13:00">2022-07-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="H3C IMC 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行">H3C IMC 命令执行</a><time datetime="2021-06-05T14:23:00.000Z" title="发表于 2021-06-05 22:23:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用友NC BshServlet 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行">用友NC BshServlet 命令执行</a><time datetime="2021-06-05T13:21:00.000Z" title="发表于 2021-06-05 21:21:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某0A 全版本getshell"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell">某0A 全版本getshell</a><time datetime="2021-05-20T08:11:00.000Z" title="发表于 2021-05-20 16:11:00">2021-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某OA 任意用户登录"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录">某OA 任意用户登录</a><time datetime="2021-05-20T08:10:00.000Z" title="发表于 2021-05-20 16:10:00">2021-05-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Li qun</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/utils.js"></script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/search/local-search.js"></script><div class="js-pjax"><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script></div><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'LHEeV46JNDnW2PY1KjVTLy2J-MdYXbMMI',
+      appKey: 'XESiWusPnVBEz6s4AhXF6ONB',
+      placeholder: '说点什么吗',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-cn',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/订阅.js"></script><script src="https://cdn1.lncld.net/static/js/3.5.0/av-min.js"></script><script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script><script src='/js/动态标题.js'></script><script src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><script src="https://myhkw.cn/api/player/1613835026120" id="myhk" key="1613835026120" m="1"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="暴富" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script><script>(function (w, d, s, id) {
+            if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function () { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window, document, 'script', 'webpushr-jssdk'));webpushr('setup', { 'key': 'BKlorLZnBq1iMFfk3xnjGJjBLNqEm1J1Bi-iRHabMhNYHjT46u-7wQUWjEMij1R6p1CyK6GjOAizKFpbF9XDjYU' });</script></body></html>

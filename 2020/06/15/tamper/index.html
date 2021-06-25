@@ -1,0 +1,696 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>sqlmap tamper 相关脚本的详细解读 | Liqun</title><meta name="keywords" content="绕过,waf"><meta name="author" content="Li qun"><meta name="copyright" content="Li qun"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="sqlmap tamper自带脚本详细解释">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqlmap tamper 相关脚本的详细解读">
+<meta property="og:url" content="https://www.ailiqun.xyz/2020/06/15/tamper/index.html">
+<meta property="og:site_name" content="Liqun">
+<meta property="og:description" content="sqlmap tamper自带脚本详细解释">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp">
+<meta property="article:published_time" content="2020-06-15T05:50:38.000Z">
+<meta property="article:modified_time" content="2021-02-23T04:50:08.052Z">
+<meta property="article:author" content="Li qun">
+<meta property="article:tag" content="绕过">
+<meta property="article:tag" content="waf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://www.ailiqun.xyz/2020/06/15/tamper/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//s4.cnzz.com"/><link rel="stylesheet" href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script async="async" data-pjax="data-pjax" src="https://s4.cnzz.com/z_stat.php?id=1279691978&amp;web_id=1279691978"></script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-02-23 12:50:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><link rel="stylesheet" href="/css/鼠标.css"><link rel="stylesheet" href="/css/昵称颜色.css"><link rel="stylesheet" href="/css/页脚透明.css"><link rel="stylesheet" href="/css/滚动条.css"><link rel="stylesheet" href="/css/个性标签.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/font-awesome-animation.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@master/Hexo/css/iconfont.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/font_2378142_a0rdikziucl.css"><meta name="generator" content="Hexo 5.3.0"></head><body><a href="javascript:void(0);" onclick="preloader.endLoading();" title="！！！！嫌慢就点一下！！！！"><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div></a><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Liqun</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconcircle"></i><span> 在线工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><i class="fa-fw iconfont iconhuizong faa-vertical animated"></i><span> 工具汇总入口</span></a></li><li><a class="site-page" href="/#"><span> ----信息收集----</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://x.threatbook.cn/"><i class="fa-fw iconfont iconsaomiao2"></i><span> 微步在线</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://community.riskiq.com/home/"><i class="fa-fw iconfont icon-shuaxin"></i><span> RiskIQ</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.virustotal.com/gui/home/url/"><i class="fa-fw iconfont iconbingdu"></i><span> VirusTotal扫毒</span></a></li><li><a class="site-page" href="/#"><span> -资产测绘-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://fofa.so/"><i class="fa-fw iconfont iconf"></i><span> Fofa  网络安全搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.shodan.io/"><i class="fa-fw iconfont iconcircle"></i><span> Shodan网络空间搜索引擎</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.zoomeye.org/"><i class="fa-fw iconfont iconyanjing"></i><span> 钟馗之眼-ZoomEye</span></a></li><li><a class="site-page" href="/#"><span> -指纹识别-</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://www.yunsee.cn/"><i class="fa-fw iconfont iconwangzhan"></i><span> 云悉CMS指纹识别平台</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://scan.top15.cn/web/"><i class="fa-fw iconfont iconTx"></i><span> TScan 指纹识别</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw iconfont iconwangzhan"></i><span> 实用小工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/%E5%9C%A8%E7%BA%BF%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%B7%A5%E5%85%B7"><i class="fa-fw iconfont iconjiemi"></i><span> 在线加解密工具</span></a></li><li><a class="site-page" href="/shell.html"><i class="fa-fw iconfont iconcircle"></i><span> 反弹shell生成</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间排序</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">sqlmap tamper 相关脚本的详细解读</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-06-15T05:50:38.000Z" title="发表于 2020-06-15 13:50:38">2020-06-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-02-23T04:50:08.052Z" title="更新于 2021-02-23 12:50:08">2021-02-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2020/06/15/tamper/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2020/06/15/tamper/" itemprop="commentCount"></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="一、SQLMap中tamper的简介"><a href="#一、SQLMap中tamper的简介" class="headerlink" title="一、SQLMap中tamper的简介"></a>一、SQLMap中tamper的简介</h1><h2 id="1-tamper的作用"><a href="#1-tamper的作用" class="headerlink" title="1.tamper的作用"></a>1.tamper的作用</h2><p>使用SQLMap提供的tamper脚本，可在一定程度上避开应用程序的敏感字符过滤、绕过WAF规则的阻挡，继而进行渗透攻击。</p>
+<p>部分防护系统的缩写：</p>
+<p>WAF：Web应用程序防火墙，Web Application Firewall<br>IPS：入侵防御系统， Intrusion Prevention System<br>IDS：入侵检测系统，Intrusion Detection System</p>
+<h2 id="2-tamper用法"><a href="#2-tamper用法" class="headerlink" title="2.tamper用法"></a>2.tamper用法</h2><p>–tamper=TAMPER 利用给定的脚本进行篡改注入数据。其用法可举例说明：<br>python sqlmap.py -u “http://…/?uname=admin&amp;pwd=pass123” –level=5 –risk=3 -p “uname” –tamper=xxx.py<br>表示对指定的url地址，以所设置的level等级、risk等级，并采用选定的tamper篡改脚本对参数“uname”进行检测</p>
+<h1 id="二、适配不同数据库类型的测试tamper"><a href="#二、适配不同数据库类型的测试tamper" class="headerlink" title="二、适配不同数据库类型的测试tamper"></a>二、适配不同数据库类型的测试tamper</h1><p>当使用SQLMap篡改脚本执行渗透测试时，面对众多tamper可能会比较困惑，一开始不晓得该使用哪些脚本来测试。有的脚本是适用于常用数据库的SQL注入攻击，有的适用于特定类型的数据库，还有的适用于某种数据库的特定版本范围。为了相对明确的了解tamper的使用场景，把tamper的使用类型和范围作一下划分，具体如下：</p>
+<h2 id="SQLMap目录中的所有tamper-script"><a href="#SQLMap目录中的所有tamper-script" class="headerlink" title="SQLMap目录中的所有tamper script"></a>SQLMap目录中的所有tamper script</h2><pre><code>tamper=
+apostrophemask,apostrophenullencode,appendnullbyte,base64encode,between,bluecoat,chardoubleencode,charencode,charunicodeencode,
+concat2concatws,equaltolike,greatest,halfversionedmorekeywords,ifnull2ifisnull,modsecurityversioned,modsecurityzeroversioned,multiplespa
+ces,nonrecursivereplacement,percentage,randomcase,randomcomments,securesphere,space2comment,space2dash,space2hash,space2moreh
+ash,space2mssqlblank,space2mssqlhash,space2mysqlblank,space2mysqldash,space2plus,space2randomblank,sp_password,unionalltounion,u
+nmagicquotes,versionedkeywords,versionedmorekeywords
+</code></pre>
+<h2 id="通用的测试tamper"><a href="#通用的测试tamper" class="headerlink" title="通用的测试tamper"></a>通用的测试tamper</h2><pre><code>tamper=
+apostrophemask,apostrophenullencode,base64encode,between,chardoubleencode,charencode,charunicodeencode,equaltolike,greatest,ifnull
+2ifisnull,multiplespaces,nonrecursivereplacement,percentage,randomcase,securesphere,space2comment,space2plus,space2randomblank,unio
+nalltounion,unmagicquotes
+</code></pre>
+<h2 id="MSSQL-Microsoft-SQL-Servre"><a href="#MSSQL-Microsoft-SQL-Servre" class="headerlink" title="MSSQL(Microsoft SQL Servre)"></a>MSSQL(Microsoft SQL Servre)</h2><pre><code>tamper=
+between,charencode,charunicodeencode,equaltolike,greatest,multiplespaces,nonrecursivereplacement,percentage,randomcase,securesphere,
+sp_password,space2comment,space2dash,space2mssqlblank,space2mysqldash,space2plus,space2randomblank,unionalltounion,unmagicquotes
+</code></pre>
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><pre><code>tamper=
+between,bluecoat,charencode,charunicodeencode,concat2concatws,equaltolike,greatest,halfversionedmorekeywords,ifnull2ifisnull,modsecuri
+tyversioned,modsecurityzeroversioned,multiplespaces,nonrecursivereplacement,percentage,randomcase,securesphere,space2comment,space
+2hash,space2morehash,space2mysqldash,space2plus,space2randomblank,unionalltounion,unmagicquotes,versionedkeywords,versionedmore
+keywords,xforwardedfor
+</code></pre>
+<h2 id="Oracle"><a href="#Oracle" class="headerlink" title="Oracle"></a>Oracle</h2><pre><code>tamper=
+between,charencode,equaltolike,greatest,multiplespaces,nonrecursivereplacement,randomcase,securesphere,space2comment,space2plus,sp
+ace2randomblank,unionalltounion,unmagicquotes,xforwardedfor
+</code></pre>
+<h2 id="Microsoft-Access"><a href="#Microsoft-Access" class="headerlink" title="Microsoft Access"></a>Microsoft Access</h2><pre><code>tamper=
+between,bluecoat,charencode,charunicodeencode,concat2concatws,equaltolike,greatest,halfversionedmorekeywords,ifnull2ifisnull,modsecuri
+tyversioned,modsecurityzeroversioned,multiplespaces,nonrecursivereplacement,percentage,randomcase,securesphere,space2comment,space
+2hash,space2morehash,space2mysqldash,space2plus,space2randomblank,unionalltounion,unmagicquotes,versionedkeywords,versionedmore
+keywords
+</code></pre>
+<h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><pre><code>  tamper=
+  between,charencode,charunicodeencode,equaltolike,greatest,multiplespaces,nonrecursivereplacement,percentage,randomcase,securesp
+  here,space2comment,space2plus,spae2randomblank,xforwardedfor
+</code></pre>
+<h2 id="tamper适用的数据库类型-amp-版本"><a href="#tamper适用的数据库类型-amp-版本" class="headerlink" title="tamper适用的数据库类型&amp;版本"></a>tamper适用的数据库类型&amp;版本</h2><table>
+<thead>
+<tr>
+<th align="left">TAMPER</th>
+<th align="left">MySQL</th>
+<th align="left">MSSQL</th>
+<th align="left">Oracle</th>
+<th align="left">PostgreSQL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">apostrophemask</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">apostrophenullencode</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">appendnullbyte</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">base64encode</td>
+<td align="left">4,5,5.5</td>
+<td align="left">2005</td>
+<td align="left">10g</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">between</td>
+<td align="left">5.1</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">bluecoat</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">apostrophemask</td>
+<td align="left">9.0.3</td>
+<td align="left">20002005</td>
+<td align="left">-</td>
+<td align="left">9.3</td>
+</tr>
+<tr>
+<td align="left">charunicodeencode</td>
+<td align="left">4,5.0 and 5.5</td>
+<td align="left">2005</td>
+<td align="left">10g</td>
+<td align="left">8.3,8.4,9.0</td>
+</tr>
+<tr>
+<td align="left">charencode</td>
+<td align="left">*</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">commalessmid</td>
+<td align="left">*</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">concat2concatws</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">equaltolike</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">greatest</td>
+<td align="left">&lt; 5.1</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">halfversionedmorekeywords</td>
+<td align="left">5.0 and 5.5</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">ifnull2ifisnull</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">informationschemacomment</td>
+<td align="left">4,5.0,5.5</td>
+<td align="left">2005</td>
+<td align="left">10g</td>
+<td align="left">8.3,8.4,9.0</td>
+</tr>
+<tr>
+<td align="left">lowercase</td>
+<td align="left">5</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">modsecurityversioned</td>
+<td align="left">5</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">modsecurityzeroversioned</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">multiplespaces</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">nonrecursivereplacement</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">overlongutf8</td>
+<td align="left">5.1.56,5.5.11</td>
+<td align="left">2000, 2005</td>
+<td align="left">N/A</td>
+<td align="left">9</td>
+</tr>
+<tr>
+<td align="left">percentage</td>
+<td align="left">4, 5.0,5.5</td>
+<td align="left">2005</td>
+<td align="left">10g</td>
+<td align="left">8.3,8.4,9.0</td>
+</tr>
+<tr>
+<td align="left">randomcase</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">randomcomments</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">securesphere</td>
+<td align="left">4,5.0,5.5</td>
+<td align="left">2005</td>
+<td align="left">10g</td>
+<td align="left">8.3,8.4,9.0</td>
+</tr>
+<tr>
+<td align="left">space2comment</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">space2dash</td>
+<td align="left">4.0,5.0</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">space2hash</td>
+<td align="left">&gt;= 5.1.13</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">space2morehash</td>
+<td align="left">-</td>
+<td align="left">2000, 2005</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">space2mssqlblank</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">space2mssqlhash</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">space2plus</td>
+<td align="left">4,5.0,5.5</td>
+<td align="left">2005</td>
+<td align="left">10g</td>
+<td align="left">8.3,8.4,9.0</td>
+</tr>
+<tr>
+<td align="left">space2randomblank</td>
+<td align="left">-</td>
+<td align="left">*</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">sp_password</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">symboliclogical</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">unionalltounion</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">unmagicquotes</td>
+<td align="left">4, 5.0,5.5</td>
+<td align="left">2005</td>
+<td align="left">10g</td>
+<td align="left">8.3,8.4,9.0</td>
+</tr>
+<tr>
+<td align="left">uppercase</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">varnish</td>
+<td align="left">*</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">versionedkeywords</td>
+<td align="left">&gt;=5.1.13</td>
+<td align="left">-</td>
+<td align="left">-</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">versionedmorekeywords</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+<tr>
+<td align="left">xforwardedfor</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+<td align="left">*</td>
+</tr>
+</tbody></table>
+<h1 id="三、SQLMap中tamper篡改脚本的功能解释"><a href="#三、SQLMap中tamper篡改脚本的功能解释" class="headerlink" title="三、SQLMap中tamper篡改脚本的功能解释"></a>三、SQLMap中tamper篡改脚本的功能解释</h1><h2 id="apostrophemask-py"><a href="#apostrophemask-py" class="headerlink" title="apostrophemask.py"></a>apostrophemask.py</h2><p>功能：对引号进行utf-8格式编码(%EF%BC%87)<br>平台：All<br>举例：1 AND ‘1’=’1 ==&gt; 1 AND %EF%BC%871%EF%BC%87=%EF%BC%871</p>
+<h2 id="apostrophenullencode-py"><a href="#apostrophenullencode-py" class="headerlink" title="apostrophenullencode.py"></a>apostrophenullencode.py</h2><p>功能：用非法的双unicode字符(%00%27)替换引号字符<br>平台：All<br>举例：1 AND ‘1’=’1 ==&gt; 1 AND %00%271%00%27=%00%271</p>
+<h2 id="appendnullbyte-py"><a href="#appendnullbyte-py" class="headerlink" title="appendnullbyte.py"></a>appendnullbyte.py</h2><p>功能：在有效载荷结束位置加载零字节字符编码<br>平台：Microsoft Access<br>举例：1 AND 1=1 ==&gt; 1 AND 1=1%00</p>
+<h2 id="base64encode-py"><a href="#base64encode-py" class="headerlink" title="base64encode.py"></a>base64encode.py</h2><p>功能：用base64格式进行编码<br>平台：All<br>举例：1’ AND SLEEP(5)# ==&gt; MScgQU5EIFNMRUVQKDUpIw==</p>
+<h2 id="between-py"><a href="#between-py" class="headerlink" title="between.py"></a>between.py</h2><p>功能：用between替换大于号（&gt;）<br>平台：Mssql2005、MySQL 4/5.0/5.5、Oracle 10g、PostgreSQL 8.3/8.4/9.0<br>举例：<br>1 AND A &gt; B –  ==&gt; 1 AND A NOT BETWEEN 0 AND B  –<br>1 AND A = B –  ==&gt; 1 AND A BETWEEN B AND B –</p>
+<h2 id="bluecoat-py"><a href="#bluecoat-py" class="headerlink" title="bluecoat.py"></a>bluecoat.py</h2><p>功能：对SQL语句替换空格字符为(%09)，并替换”=”—&gt;”LIKE”<br>平台：MySQL 5.1, SGOS<br>举例：SELECT username FROM users WHERE id = 1 ==&gt; SELECT%09username FROM%09users WHERE%09id LIKE 1</p>
+<h2 id="apostrophemask-py-1"><a href="#apostrophemask-py-1" class="headerlink" title="apostrophemask.py"></a>apostrophemask.py</h2><p>功能：用utf-8格式编码引号(如：%EF%BC%87)<br>平台：All<br>举例：1 AND ‘1’=’1 ==&gt; 1 AND %EF%BC%871%EF%BC%87=%EF%BC%871</p>
+<h2 id="charunicodeencode-py"><a href="#charunicodeencode-py" class="headerlink" title="charunicodeencode.py"></a>charunicodeencode.py</h2><p>功能：对字符串进行Unicode格式转义编码<br>平台：Mssql 2000,2005、MySQL 5.1.56、PostgreSQL 9.0.3 ASP/ASP.NET<br>举例：SELECT FIELD%20FROM TABLE ==&gt; %u0053%u0045%u004C%u0045%u0043%u0054%u0020%u0046%u0049%u0045%u004C%u0044%u0020%u0046%u0052%u004F%u004D%u0020%u0054%u0041%u0042%u004C%u0045</p>
+<h2 id="charencode-py"><a href="#charencode-py" class="headerlink" title="charencode.py"></a>charencode.py</h2><p>功能：采用url格式编码1次<br>平台：Mssql 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0<br>举例：SELECT FIELD FROM%20TABLE ==&gt; %53%45%4C%45%43%54%20%46%49%45%4C%44%20%46%52%4F%4D%20%54%41%42%4C%45</p>
+<h2 id="chardoubleencode-py"><a href="#chardoubleencode-py" class="headerlink" title="chardoubleencode.py"></a>chardoubleencode.py</h2><p>功能：采用url格式编码2次<br>平台：All<br>举例：SELECT FIELD FROM%20TABLE ==&gt; %2553%2545%254C%2545%2543%2554%2520%2546%2549%2545%254C%2544%2520%2546%2552%254F%254D%2520%2554%2541%2542%254C%2545</p>
+<h2 id="commalessmid-py"><a href="#commalessmid-py" class="headerlink" title="commalessmid.py"></a>commalessmid.py</h2><p>功能：将payload中的逗号用 from和for代替，用于过滤了逗号并且是3个参数的情况<br>平台：MySQL 5.0, 5.5<br>举例：MID(VERSION(), 1, 1) ==&gt; MID(VERSION() FROM 1 FOR 1)</p>
+<h2 id="concat2concatws-py"><a href="#concat2concatws-py" class="headerlink" title="concat2concatws.py"></a>concat2concatws.py</h2><p>功能：CONCAT() ==&gt; CONCAT_WS()，用于过滤了CONCAT()函数的情况<br>平台： MySQL 5.0<br>举例：CONCAT(1,2) ==&gt; CONCAT_WS(MID(CHAR(0),0,0),1,2)</p>
+<h2 id="equaltolike-py"><a href="#equaltolike-py" class="headerlink" title="equaltolike.py"></a>equaltolike.py</h2><p>功能：= ==&gt; LIKE，用于过滤了等号”=”的情况<br>平台：Mssql 2005、MySQL 4, 5.0 and 5.5<br>举例：SELECT * FROM users WHERE id=1 ==&gt; SELECT * FROM users WHERE id LIKE 1</p>
+<h2 id="greatest-py"><a href="#greatest-py" class="headerlink" title="greatest.py"></a>greatest.py</h2><p>功能：&gt; ==&gt; GREATEST<br>平台：MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0<br>举例：1 AND A &gt; B ==&gt; 1 AND GREATEST(A, B+1)=A<br>a和b+1比较，取两者中的最大值为a；则a &gt;= b+1，亦即a &gt; b</p>
+<h2 id="halfversionedmorekeywords-py"><a href="#halfversionedmorekeywords-py" class="headerlink" title="halfversionedmorekeywords.py"></a>halfversionedmorekeywords.py</h2><p>功能：空格 ==&gt; /<em>!0 （在关键字前添加注释）<br>平台：MySQL 4.0.18, 5.0.22（Mysql &lt; 5.1）<br>举例：union ==&gt; /</em>!0union</p>
+<h2 id="ifnull2ifisnull-py"><a href="#ifnull2ifisnull-py" class="headerlink" title="ifnull2ifisnull.py"></a>ifnull2ifisnull.py</h2><p>功能：IFNULL(A, B) ==&gt; IF(ISNULL(A), B, A)<br>平台：MySQL 5.0 and 5.5<br>举例：IFNULL(1, 2) ==&gt; IF(ISNULL(1),2,1)</p>
+<h2 id="informationschemacomment-py"><a href="#informationschemacomment-py" class="headerlink" title="informationschemacomment.py"></a>informationschemacomment.py</h2><p>功能：<br>在 information_schema 后面加上 /<strong>/ ，用于绕过对 information_schema 的情况<br>retVal = re.sub(r”(?i)(information_schema).”, “g&lt;1&gt;/</strong>/.”, payload)<br>平台：All<br>举例：select table_name from information_schema.tables ==&gt; select table_name from information_schema/**/.tables</p>
+<h2 id="lowercase-py"><a href="#lowercase-py" class="headerlink" title="lowercase.py"></a>lowercase.py</h2><p>功能：将 payload 里的大写转为小写<br>平台：Mssql 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0<br>举例：SELECT table_name FROM INFORMATION_SCHEMA.TABLES ==&gt; select table_name from information_schema.tables</p>
+<h2 id="modsecurityversioned-py"><a href="#modsecurityversioned-py" class="headerlink" title="modsecurityversioned.py"></a>modsecurityversioned.py</h2><p>功能：用注释来包围完整的查询语句，用于绕过 ModSecurity 开源 waf<br>平台：MySQL 5.0<br>举例：1 AND 2&gt;1–  ==&gt; 1 /<em>!30874AND 2&gt;1</em>/–</p>
+<h2 id="modsecurityzeroversioned-py"><a href="#modsecurityzeroversioned-py" class="headerlink" title="modsecurityzeroversioned.py"></a>modsecurityzeroversioned.py</h2><p>功能：用注释来包围完整的查询语句，用于绕过 waf ，和上面类似<br>平台：Mysql<br>举例：1 and 2&gt;1–+ ==&gt; 1 /!00000and 2&gt;1/–+</p>
+<h2 id="multiplespaces-py"><a href="#multiplespaces-py" class="headerlink" title="multiplespaces.py"></a>multiplespaces.py</h2><p>功能：围绕SQL关键字添加多个空格<br>平台：All<br>举例：1 UNION SELECT foobar ==&gt; 1   UNION   SELECT   foobar</p>
+<h2 id="nonrecursivereplacement-py"><a href="#nonrecursivereplacement-py" class="headerlink" title="nonrecursivereplacement.py"></a>nonrecursivereplacement.py</h2><p>功能：关键字双写，可用于关键字过滤<br>平台：All<br>举例：1 UNION SELECT 2–  ==&gt; 1 UNIONUNION SELESELECTCT 2–</p>
+<h2 id="overlongutf8-py"><a href="#overlongutf8-py" class="headerlink" title="overlongutf8.py"></a>overlongutf8.py</h2><p>功能： 转换给定的payload当中的所有字符<br>平台：All<br>举例：SELECT FIELD FROM TABLE WHERE 2&gt;1 ==&gt; SELECT%C0%AAFIELD%C0%AAFROM%C0%AATABLE%C0%AAWHERE%C0%AA2%C0%BE1</p>
+<h2 id="percentage-py"><a href="#percentage-py" class="headerlink" title="percentage.py"></a>percentage.py</h2><p>功能：用百分号来绕过关键字过滤，在关键字的每个字母前面都加一个(%)<br>平台：Mssql 2000, 2005、MySQL 5.1.56, 5.5.11、PostgreSQL 9.0<br>举例：SELECT FIELD FROM TABLE ==&gt; %S%E%L%E%C%T %F%I%E%L%D %F%R%O%M %T%A%B%L%E</p>
+<h2 id="randomcase-py"><a href="#randomcase-py" class="headerlink" title="randomcase.py"></a>randomcase.py</h2><p>功能：将 payload 随机大小写<br>平台：Mssql 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0<br>举例：INSERT ==&gt; InseRt</p>
+<h2 id="randomcomments-py"><a href="#randomcomments-py" class="headerlink" title="randomcomments.py"></a>randomcomments.py</h2><p>功能：在 payload 的关键字中间随机插入注释符 /**/ ，可用于绕过关键字过滤<br>平台：Mysql<br>举例：INSERT ==&gt; I / ** / N / ** / SERT</p>
+<h2 id="securesphere-py"><a href="#securesphere-py" class="headerlink" title="securesphere.py"></a>securesphere.py</h2><p>功能：在payload后追加特殊构造的字符串<br>平台：All<br>举例：1 AND 1=1 ==&gt; 1 AND 1=1 and ‘0having’=’0having’</p>
+<h2 id="space2comment-py"><a href="#space2comment-py" class="headerlink" title="space2comment.py"></a>space2comment.py</h2><p>功能：用注释符 // 代替空格，用于空格的绕过<br>平台：Mssql 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0<br>举例：SELECT id FROM users ==&gt; SELECT//id//FROM//users</p>
+<h2 id="space2dash-py"><a href="#space2dash-py" class="headerlink" title="space2dash.py"></a>space2dash.py</h2><p>功能：用[注释符(–)+一个随机字符串+一个换行符]替换控制符<br>平台：MSSQL、 SQLite<br>举例：union select 1,2–+ ==&gt; union–HSHjsJh%0Aselect–HhjHSJ%0A1,2–+</p>
+<h2 id="space2hash-py"><a href="#space2hash-py" class="headerlink" title="space2hash.py"></a>space2hash.py</h2><p>功能：用[注释符(#)+一个随机字符串+一个换行符]替换控制符<br>平台：Mysql<br>举例：union select 1,2–+ ==&gt; union%23HSHjsJh%0Aselect%23HhjHSJ%0A1,2–+</p>
+<h2 id="space2morehash-py"><a href="#space2morehash-py" class="headerlink" title="space2morehash.py"></a>space2morehash.py</h2><p>功能：用多个[注释符(#)+一个随机字符串+一个换行符]替换控制符<br>平台：MySQL &gt;= 5.1.13<br>举例：union select 1,2–+ ==&gt; union %23 HSHjsJh %0A select %23 HhjHSJ %0A%23 HJHJhj %0A 1,2–+</p>
+<h2 id="space2mssqlblank-py"><a href="#space2mssqlblank-py" class="headerlink" title="space2mssqlblank.py"></a>space2mssqlblank.py</h2><p>功能：用随机的空白符替换payload中的空格<br>blanks = (‘%01’, ‘%02’, ‘%03’, ‘%04’, ‘%05’, ‘%06’, ‘%07’, ‘%08’, ‘%09’, ‘%0B’, ‘%0C’, ‘%0D’, ‘%0E’, ‘%0F’, ‘%0A’)<br>平台：Mssql 2000,2005<br>举例：SELECT id FROM users ==&gt; SELECT%0Eid%0DFROM%07users</p>
+<h2 id="space2mssqlhash-py"><a href="#space2mssqlhash-py" class="headerlink" title="space2mssqlhash.py"></a>space2mssqlhash.py</h2><p>功能：用[字符# +一个换行符]替换payload中的空格<br>平台：MSSQL、MySQL<br>举例：union select 1,2–+ ==&gt; union%23%0Aselect%23%0A1,2–+</p>
+<h2 id="space2plus-py"><a href="#space2plus-py" class="headerlink" title="space2plus.py"></a>space2plus.py</h2><p>功能：用加号(+)替换空格<br>平台：All<br>举例：SELECT id FROM users ==&gt; SELECT+id+FROM+users</p>
+<h2 id="space2randomblank-py"><a href="#space2randomblank-py" class="headerlink" title="space2randomblank.py"></a>space2randomblank.py</h2><p>功能：用随机的空白符替换payload中的空格<br>平台：Mssql 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0<br>举例：SELECT id FROM users ==&gt; SELECT%0Did%0DFROM%0Ausers</p>
+<h2 id="sp-password-py"><a href="#sp-password-py" class="headerlink" title="sp_password.py"></a>sp_password.py</h2><p>功能：在payload语句后添加 sp_password ，用于迷惑数据库日志（Space ==&gt; sp_password）<br>平台：Mssql<br>举例：1 AND 9227=9227–  ==&gt; 1 AND 9227=9227 – sp_password</p>
+<h2 id="symboliclogical-py"><a href="#symboliclogical-py" class="headerlink" title="symboliclogical.py"></a>symboliclogical.py</h2><p>功能：用 &amp;&amp; 替换 and ，用 || 替换 or ，用于这些关键字被过滤的情况<br>平台：All<br>举例：<br>1 and 1=1 ==&gt; 1 %26%26 1=1<br>1 or 1=1 ==&gt; 1 %7c%7c 1=1</p>
+<h2 id="unionalltounion-py"><a href="#unionalltounion-py" class="headerlink" title="unionalltounion.py"></a>unionalltounion.py</h2><p>功能：用 union select 替换union all select<br>平台：All<br>举例：union all select 1,2–+ ==&gt; union select 1,2–+</p>
+<h2 id="unmagicquotes-py"><a href="#unmagicquotes-py" class="headerlink" title="unmagicquotes.py"></a>unmagicquotes.py</h2><p>功能：用宽字符绕过 GPC addslashes<br>平台：All<br>举例：1’ and 1=1 ==&gt; 1%df%27 and 1=1–</p>
+<h2 id="uppercase-py"><a href="#uppercase-py" class="headerlink" title="uppercase.py"></a>uppercase.py</h2><p>功能：将payload中的小写字母转为大写格式<br>平台：Mssql 2005、MySQL 4, 5.0 and 5.5、Oracle 10g、PostgreSQL 8.3, 8.4, 9.0<br>举例：insert ==&gt; INSERT</p>
+<h2 id="varnish-py"><a href="#varnish-py" class="headerlink" title="varnish.py"></a>varnish.py</h2><p>功能：添加一个HTTP头“ X-originating-IP ”来绕过WAF<br>平台：headers = kwargs.get(“headers”, {})headers[“X-originating-IP”] = “127.0.0.1”return payload<br>举例：All</p>
+<h2 id="versionedkeywords-py"><a href="#versionedkeywords-py" class="headerlink" title="versionedkeywords.py"></a>versionedkeywords.py</h2><p>功能：对非函数的关键字进行注释<br>平台：MySQL 4.0.18, 5.1.56, 5.5.11<br>举例：1 union select user() ==&gt; 1/!UNION//!SELECT/user()</p>
+<h2 id="versionedmorekeywords-py"><a href="#versionedmorekeywords-py" class="headerlink" title="versionedmorekeywords.py"></a>versionedmorekeywords.py</h2><p>功能：对每个关键字进行注释处理<br>平台：MySQL 5.1.56, 5.5.11<br>举例：1 union select user() ==&gt; 1/!UNION//!SELECT/user()</p>
+<h2 id="xforwardedfor-py"><a href="#xforwardedfor-py" class="headerlink" title="xforwardedfor.py"></a>xforwardedfor.py</h2><p>功能：添加一个伪造的HTTP头“ X-Forwarded-For ”来绕过WAF<br>平台：All<br>举例：headers = kwargs.get(“headers”, {})headers[“X-Forwarded-For”] = randomIP()return payload</p>
+<p>参考来源：<br>[1]SQLMap Tamper Scripts (SQL Injection and WAF bypass) Tips(<a target="_blank" rel="noopener" href="https://medium.com/@drag0n/sqlmap-tamper-scripts-sql-injection-and-waf-bypass-c5a3f5764cb3">https://medium.com/@drag0n/sqlmap-tamper-scripts-sql-injection-and-waf-bypass-c5a3f5764cb3</a>)<br>[2]sqlmap的tamper详解(<a target="_blank" rel="noopener" href="http://www.myh0st.cn/index.php/archives/881/">http://www.myh0st.cn/index.php/archives/881/</a>)<br>[3]sqlmap-tamper-scripts sqlmap tamper 详解(<a target="_blank" rel="noopener" href="http://www.moonsec.com/post-422.html">http://www.moonsec.com/post-422.html</a>)<br>[4]Use SQLMAP To Bypass Cloudflare WAF And Hack Website With SQL Injection(<a target="_blank" rel="noopener" href="https://www.sunnyhoi.com/use-sqlmap-to-bypass-cloudflare-waf-and-hack-website-with-sql-injection/">https://www.sunnyhoi.com/use-sqlmap-to-bypass-cloudflare-waf-and-hack-website-with-sql-injection/</a>)<br>[5]Understanding “tamper” option in Sqlmap (II)(<a target="_blank" rel="noopener" href="http://0xd0m7.blogspot.com/2016/02/understanding-tamper-option-in-sqlmap-ii.html">http://0xd0m7.blogspot.com/2016/02/understanding-tamper-option-in-sqlmap-ii.html</a>)</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Li qun</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.ailiqun.xyz/2020/06/15/tamper/">https://www.ailiqun.xyz/2020/06/15/tamper/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.ailiqun.xyz" target="_blank">Liqun</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BB%95%E8%BF%87/">绕过</a><a class="post-meta__tags" href="/tags/waf/">waf</a></div><div class="post_share"><div class="social-share" data-image="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button button--animated"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/wechat.webp" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" target="_blank"><img class="post-qr-code-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/alipay.webp" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/06/18/untitled-1592474049377/"><img class="prev-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Cknife 跨平台菜刀 修改版</div></div></a></div><div class="next-post pull-right"><a href="/2020/04/18/%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96/"><img class="next-cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">绕过杀软获取管理员密码姿势</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/04/18/密码抓取/" title="绕过杀软获取管理员密码姿势"><img class="cover" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-18</div><div class="title">绕过杀软获取管理员密码姿势</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/txx.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Li qun</div><div class="author-info__description">ailiqun.xyz@gmail.com</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">30</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">40</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:ailiqun.xyz@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">你总是来去如风 <img src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/xx.gif"></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81SQLMap%E4%B8%ADtamper%E7%9A%84%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">一、SQLMap中tamper的简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-tamper%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1.tamper的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-tamper%E7%94%A8%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">2.tamper用法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%80%82%E9%85%8D%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%B5%8B%E8%AF%95tamper"><span class="toc-number">2.</span> <span class="toc-text">二、适配不同数据库类型的测试tamper</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQLMap%E7%9B%AE%E5%BD%95%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89tamper-script"><span class="toc-number">2.1.</span> <span class="toc-text">SQLMap目录中的所有tamper script</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E7%9A%84%E6%B5%8B%E8%AF%95tamper"><span class="toc-number">2.2.</span> <span class="toc-text">通用的测试tamper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MSSQL-Microsoft-SQL-Servre"><span class="toc-number">2.3.</span> <span class="toc-text">MSSQL(Microsoft SQL Servre)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL"><span class="toc-number">2.4.</span> <span class="toc-text">MySQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Oracle"><span class="toc-number">2.5.</span> <span class="toc-text">Oracle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Microsoft-Access"><span class="toc-number">2.6.</span> <span class="toc-text">Microsoft Access</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PostgreSQL"><span class="toc-number">2.7.</span> <span class="toc-text">PostgreSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tamper%E9%80%82%E7%94%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B1%BB%E5%9E%8B-amp-%E7%89%88%E6%9C%AC"><span class="toc-number">2.8.</span> <span class="toc-text">tamper适用的数据库类型&amp;版本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81SQLMap%E4%B8%ADtamper%E7%AF%A1%E6%94%B9%E8%84%9A%E6%9C%AC%E7%9A%84%E5%8A%9F%E8%83%BD%E8%A7%A3%E9%87%8A"><span class="toc-number">3.</span> <span class="toc-text">三、SQLMap中tamper篡改脚本的功能解释</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#apostrophemask-py"><span class="toc-number">3.1.</span> <span class="toc-text">apostrophemask.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#apostrophenullencode-py"><span class="toc-number">3.2.</span> <span class="toc-text">apostrophenullencode.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#appendnullbyte-py"><span class="toc-number">3.3.</span> <span class="toc-text">appendnullbyte.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#base64encode-py"><span class="toc-number">3.4.</span> <span class="toc-text">base64encode.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#between-py"><span class="toc-number">3.5.</span> <span class="toc-text">between.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bluecoat-py"><span class="toc-number">3.6.</span> <span class="toc-text">bluecoat.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#apostrophemask-py-1"><span class="toc-number">3.7.</span> <span class="toc-text">apostrophemask.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#charunicodeencode-py"><span class="toc-number">3.8.</span> <span class="toc-text">charunicodeencode.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#charencode-py"><span class="toc-number">3.9.</span> <span class="toc-text">charencode.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chardoubleencode-py"><span class="toc-number">3.10.</span> <span class="toc-text">chardoubleencode.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#commalessmid-py"><span class="toc-number">3.11.</span> <span class="toc-text">commalessmid.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#concat2concatws-py"><span class="toc-number">3.12.</span> <span class="toc-text">concat2concatws.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#equaltolike-py"><span class="toc-number">3.13.</span> <span class="toc-text">equaltolike.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#greatest-py"><span class="toc-number">3.14.</span> <span class="toc-text">greatest.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#halfversionedmorekeywords-py"><span class="toc-number">3.15.</span> <span class="toc-text">halfversionedmorekeywords.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ifnull2ifisnull-py"><span class="toc-number">3.16.</span> <span class="toc-text">ifnull2ifisnull.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#informationschemacomment-py"><span class="toc-number">3.17.</span> <span class="toc-text">informationschemacomment.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lowercase-py"><span class="toc-number">3.18.</span> <span class="toc-text">lowercase.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#modsecurityversioned-py"><span class="toc-number">3.19.</span> <span class="toc-text">modsecurityversioned.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#modsecurityzeroversioned-py"><span class="toc-number">3.20.</span> <span class="toc-text">modsecurityzeroversioned.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#multiplespaces-py"><span class="toc-number">3.21.</span> <span class="toc-text">multiplespaces.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nonrecursivereplacement-py"><span class="toc-number">3.22.</span> <span class="toc-text">nonrecursivereplacement.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#overlongutf8-py"><span class="toc-number">3.23.</span> <span class="toc-text">overlongutf8.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#percentage-py"><span class="toc-number">3.24.</span> <span class="toc-text">percentage.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#randomcase-py"><span class="toc-number">3.25.</span> <span class="toc-text">randomcase.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#randomcomments-py"><span class="toc-number">3.26.</span> <span class="toc-text">randomcomments.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#securesphere-py"><span class="toc-number">3.27.</span> <span class="toc-text">securesphere.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2comment-py"><span class="toc-number">3.28.</span> <span class="toc-text">space2comment.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2dash-py"><span class="toc-number">3.29.</span> <span class="toc-text">space2dash.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2hash-py"><span class="toc-number">3.30.</span> <span class="toc-text">space2hash.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2morehash-py"><span class="toc-number">3.31.</span> <span class="toc-text">space2morehash.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2mssqlblank-py"><span class="toc-number">3.32.</span> <span class="toc-text">space2mssqlblank.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2mssqlhash-py"><span class="toc-number">3.33.</span> <span class="toc-text">space2mssqlhash.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2plus-py"><span class="toc-number">3.34.</span> <span class="toc-text">space2plus.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#space2randomblank-py"><span class="toc-number">3.35.</span> <span class="toc-text">space2randomblank.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sp-password-py"><span class="toc-number">3.36.</span> <span class="toc-text">sp_password.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#symboliclogical-py"><span class="toc-number">3.37.</span> <span class="toc-text">symboliclogical.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unionalltounion-py"><span class="toc-number">3.38.</span> <span class="toc-text">unionalltounion.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unmagicquotes-py"><span class="toc-number">3.39.</span> <span class="toc-text">unmagicquotes.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#uppercase-py"><span class="toc-number">3.40.</span> <span class="toc-text">uppercase.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#varnish-py"><span class="toc-number">3.41.</span> <span class="toc-text">varnish.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#versionedkeywords-py"><span class="toc-number">3.42.</span> <span class="toc-text">versionedkeywords.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#versionedmorekeywords-py"><span class="toc-number">3.43.</span> <span class="toc-text">versionedmorekeywords.py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xforwardedfor-py"><span class="toc-number">3.44.</span> <span class="toc-text">xforwardedfor.py</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="在线工具汇总"/></a><div class="content"><a class="title" href="/2022/07/24/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="在线工具汇总">在线工具汇总</a><time datetime="2022-07-24T12:13:00.000Z" title="发表于 2022-07-24 20:13:00">2022-07-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post6.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="H3C IMC 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/H3C-IMC-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="H3C IMC 命令执行">H3C IMC 命令执行</a><time datetime="2021-06-05T14:23:00.000Z" title="发表于 2021-06-05 22:23:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用友NC BshServlet 命令执行"/></a><div class="content"><a class="title" href="/2021/06/05/%E7%94%A8%E5%8F%8BNC-rce/" title="用友NC BshServlet 命令执行">用友NC BshServlet 命令执行</a><time datetime="2021-06-05T13:21:00.000Z" title="发表于 2021-06-05 21:21:00">2021-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post7.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某0A 全版本getshell"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%900A-%E5%85%A8%E7%89%88%E6%9C%ACgetshell/" title="某0A 全版本getshell">某0A 全版本getshell</a><time datetime="2021-05-20T08:11:00.000Z" title="发表于 2021-05-20 16:11:00">2021-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录"><img data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/img/post4.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="某OA 任意用户登录"/></a><div class="content"><a class="title" href="/2021/05/20/%E6%9F%90OA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/" title="某OA 任意用户登录">某OA 任意用户登录</a><time datetime="2021-05-20T08:10:00.000Z" title="发表于 2021-05-20 16:10:00">2021-05-20</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Li qun</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/utils.js"></script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/js/search/local-search.js"></script><div class="js-pjax"><script async="async">var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})
+setTimeout(function(){preloader.endLoading();}, 3000);</script></div><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'LHEeV46JNDnW2PY1KjVTLy2J-MdYXbMMI',
+      appKey: 'XESiWusPnVBEz6s4AhXF6ONB',
+      placeholder: '说点什么吗',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-cn',
+      recordIP: true,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="/js/订阅.js"></script><script src="https://cdn1.lncld.net/static/js/3.5.0/av-min.js"></script><script src='https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js'></script><script src='/js/动态标题.js'></script><script src="//lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script><script src="https://myhkw.cn/api/player/1613835026120" id="myhk" key="1613835026120" m="1"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="false" data-text="暴富" data-fontsize="15px" data-random="false" async="async"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config-diff',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script><script>(function (w, d, s, id) {
+            if (typeof (w.webpushr) !== 'undefined') return; w.webpushr = w.webpushr || function () { (w.webpushr.q = w.webpushr.q || []).push(arguments) }; var js, fjs = d.getElementsByTagName(s)[0]; js = d.createElement(s); js.id = id; js.async = 1; js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window, document, 'script', 'webpushr-jssdk'));webpushr('setup', { 'key': 'BKlorLZnBq1iMFfk3xnjGJjBLNqEm1J1Bi-iRHabMhNYHjT46u-7wQUWjEMij1R6p1CyK6GjOAizKFpbF9XDjYU' });</script></body></html>

@@ -1,0 +1,12 @@
+
+/* 所有背景（包括首页卡片、文章页、页面页等） */
+#aside_content .card-widget, #recent-posts>.recent-post-item, #aside-content>.card-widget, #aside-content>.sticky_layout>.card-widget, .layout_page>div:first-child:not(.recent-posts), .layout_post>#page, .layout_post>#post, .read-mode .layout_post>#post{
+    /* 以下代表白色透明度为0.3 */
+    background: rgba(255,255,255,.7);
+}
+
+/* 页脚透明 */
+
+#footer {
+    background: transparent !important;
+}
