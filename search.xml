@@ -31,6 +31,35 @@
     
     
     <entry>
+      <title>YAIP rce工具</title>
+      <link href="2021/07/10/YAIP-rce%E5%B7%A5%E5%85%B7/"/>
+      <url>2021/07/10/YAIP-rce%E5%B7%A5%E5%85%B7/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="YAIP-rce-小工具"><a href="#YAIP-rce-小工具" class="headerlink" title="YAIP rce 小工具"></a>YAIP rce 小工具</h3><h3 id="我大哥的博客"><a href="#我大哥的博客" class="headerlink" title="我大哥的博客"></a><a href="https://snowlovely.live/">我大哥的博客</a></h3><p><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/YApii1.webp" alt="image"></p><p><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/YApii2.webp" alt="image"></p><p><img src= "/img/loading.gif" data-lazy-src="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/YApii3.webp" alt="image"></p><h4 id="YApiExploit下载地址"><a href="#YApiExploit下载地址" class="headerlink" title="YApiExploit下载地址"></a><a href="https://ailiqun.oss-cn-shenzhen.aliyuncs.com/images/YApiExploit.zip">YApiExploit下载地址</a></h4><h3 id="不贴复现截图了"><a href="#不贴复现截图了" class="headerlink" title="不贴复现截图了"></a>不贴复现截图了</h3><h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><pre><code>https://www.o2oxy.cn/3611.htmlhttps://fndxkl1.github.io/2021/07/08/YApi-RCE/</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 漏洞复现 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 漏洞复现 </tag>
+            
+            <tag> YAip </tag>
+            
+            <tag> 渗透工具 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>致远OA FastJson rce回显</title>
       <link href="2021/06/29/%E8%87%B4%E8%BF%9COA-FastJson-rce%E5%9B%9E%E6%98%BE/"/>
       <url>2021/06/29/%E8%87%B4%E8%BF%9COA-FastJson-rce%E5%9B%9E%E6%98%BE/</url>
