@@ -305,6 +305,13 @@
   </url>
   
   <url>
+    <loc>https://www.ailiqun.xyz/tags/H3C/</loc>
+    <lastmod>2022-03-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://www.ailiqun.xyz/tags/Netsparker/</loc>
     <lastmod>2022-03-08</lastmod>
     <changefreq>daily</changefreq>
@@ -327,13 +334,6 @@
   
   <url>
     <loc>https://www.ailiqun.xyz/tags/%E8%BD%AF%E4%BB%B6%E4%B8%8B%E8%BD%BD/</loc>
-    <lastmod>2022-03-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.ailiqun.xyz/tags/H3C/</loc>
     <lastmod>2022-03-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
